@@ -3,7 +3,11 @@
 import { useState } from 'react';
 import { Share2, Check } from 'lucide-react';
 
-export function ShareButton() {
+interface ShareButtonProps {
+  className?: string;
+}
+
+export function ShareButton({ className = '' }: ShareButtonProps) {
   const [copied, setCopied] = useState(false);
 
   const handleShare = async () => {
@@ -11,7 +15,7 @@ export function ShareButton() {
       if (navigator.share) {
         try {
           await navigator.share({
-            title: 'Links | Desenvolvedor Full Stack',
+            title: 'Portfólio & Hub | Desenvolvedor Full Stack',
             url: window.location.href,
           });
         } catch {
@@ -28,10 +32,15 @@ export function ShareButton() {
   return (
     <button
       onClick={handleShare}
-      title="Compartilhar links"
-      className="p-2.5 rounded-full bg-neutral-900/80 hover:bg-neutral-800 border border-neutral-800 hover:border-neutral-700 text-neutral-400 hover:text-white transition-all cursor-pointer shadow-sm"
+      title={copied ? 'Link copiado!' : 'Compartilhar página'}
+      aria-label="Compartilhar página"
+      className={`p-2 rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white/80 dark:bg-neutral-900/80 hover:bg-neutral-100 dark:hover:bg-neutral-800 text-neutral-600 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-white transition-all cursor-pointer shadow-sm hover:scale-105 flex items-center justify-center ${className}`}
     >
-      {copied ? <Check className="w-4 h-4 text-emerald-400" /> : <Share2 className="w-4 h-4" />}
+      {copied ? (
+        <Check className="w-4 h-4 text-emerald-500 transition-transform scale-110" />
+      ) : (
+        <Share2 className="w-4 h-4" />
+      )}
     </button>
   );
 }
