@@ -1,9 +1,30 @@
-<!-- BEGIN:nextjs-agent-rules -->
+# Contexto do Projeto: Portfólio Full Stack
 
-# This is NOT the Next.js you know
+## 🛠️ Stack & Arquitetura
+- **Framework:** Next.js (App Router) com TypeScript
+- **Estilização:** Tailwind CSS
+- **Banco de Dados:** PostgreSQL hospedado no Supabase (Região: São Paulo)
+- **ORM:** Prisma v7
+- **Estrutura de Pastas:** `src/app/` (páginas/rotas) e `src/lib/` (utilitários como `prisma.ts`)
 
-This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
+## 🗄️ Esquema do Banco de Dados
+- **`Profile`**: `id` ("me"), `name`, `bio`, `avatar`, `email`, `github`, `linkedin`, `twitter`
+- **`QuickLink`**: `id`, `title`, `url`, `icon`, `highlight` (Boolean), `order` (Int)
+- **`Project`**: `id`, `title`, `description`, `tags`, `repoUrl`, `liveUrl`, `imageUrl`, `createdAt`, `updatedAt`
+- **`Post`**: `id`, `title`, `slug` (unique), `content` (Text), `published` (Boolean), `createdAt`, `updatedAt`
 
-This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
+## 📌 Configurações de Conexão & Segurança
+- Arquivo de configuração: `prisma.config.ts` (Prisma 7 usa `datasource: { url: process.env.DIRECT_URL }` para migrações).
+- As credenciais de banco ficam no `.env` (`DATABASE_URL` e `DIRECT_URL`).
+- Proteção da rota administrativa via `ADMIN_PASSWORD` no `.env` (com cookie HttpOnly `admin_session`).
+- O Prisma Client Singleton está instanciado em `src/lib/prisma.ts` utilizando o driver adapter `@prisma/adapter-pg` e o cliente gerado em `src/generated/prisma`.
 
-<!-- END:nextjs-agent-rules -->
+## 🎯 Progresso & Próximos Passos
+- [x] Correção de tipagem e configuração do Prisma v7 com driver adapter `@prisma/adapter-pg`.
+- [x] Reestruturação da Raiz (`src/app/page.tsx`) como Hub / Linktree moderno com botões dinâmicos e dados de `Profile`.
+- [x] Criação da rota dedicada para projetos (`src/app/projects/page.tsx`).
+- [x] Criação do Módulo de Diário / Posts (`src/app/journal/page.tsx` e `src/app/journal/[slug]/page.tsx`).
+- [x] Painel Admin (`/admin`) completo e protegido com abas para Perfil, Links do Hub, Projetos e Diário.
+- [x] Suporte a Tema Dinâmico Claro/Escuro (Dark/Light mode via `next-themes` com `ThemeToggle` na Navbar, Hub e Admin).
+- [x] Auditoria de dinamismo total no Hub, Projetos, Diário e Links (100% integrados ao Supabase via Prisma).
+- [ ] Preparar repositório e variáveis de ambiente para deploy final na Vercel.
