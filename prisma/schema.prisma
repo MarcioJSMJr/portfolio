@@ -1,0 +1,50 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Project {
+  id          String   @id @default(cuid())
+  title       String
+  description String
+  tags        String[]
+  repoUrl     String?
+  liveUrl     String?
+  imageUrl    String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Post {
+  id        String   @id @default(cuid())
+  title     String
+  slug      String   @unique
+  content   String   @db.Text
+  published Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Profile {
+  id       String   @id @default("me")
+  name     String
+  bio      String
+  avatar   String?
+  email    String?
+  github   String?
+  linkedin String?
+  twitter  String?
+}
+
+model QuickLink {
+  id        String   @id @default(cuid())
+  title     String
+  url       String
+  icon      String?  // ex: 'github', 'globe', 'file-text', 'code'
+  highlight Boolean  @default(false)
+  order     Int      @default(0)
+}
