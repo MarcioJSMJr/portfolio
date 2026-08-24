@@ -27,5 +27,5 @@
 - [x] Painel Admin (`/admin`) completo e protegido com abas para Perfil, Links do Hub, Projetos e Diário.
 - [x] Suporte a Tema Dinâmico Claro/Escuro (Dark/Light mode via `next-themes` com `ThemeToggle` na Navbar, Hub e Admin).
 - [x] Auditoria de dinamismo total no Hub, Projetos, Diário e Links (100% integrados ao Supabase via Prisma).
-- [x] Integração com `@vercel/speed-insights` no RootLayout para métricas de performance.
+- [x] Integração com `@vercel/speed-insights` e `@vercel/analytics` no RootLayout para métricas de performance e tráfego.
 - [ ] Conectar o projeto na Vercel e configurar as variáveis de ambiente de produção.
