@@ -238,20 +238,57 @@ export async function updateProject(
 /**
  * Server Action auxiliar para deletar um projeto existente.
  */
-export async function deleteProject(id: string): Promise<ActionState> {
+export async function deleteProject(idOrTitle: string): Promise<ActionState> {
   try {
     const isAuth = await isAdminAuthenticated();
     if (!isAuth) {
       return { success: false, message: 'Acesso não autorizado.' };
     }
 
-    if (!id) {
+    const cleanId = String(idOrTitle || '').trim();
+    if (!cleanId) {
       return { success: false, message: 'ID do projeto inválido.' };
     }
 
-    await prisma.project.delete({
-      where: { id },
-    });
+    // 1. Tenta deletar diretamente por ID
+    try {
+      await prisma.project.delete({
+        where: { id: cleanId },
+      });
+    } catch (directErr) {
+      // 2. Fallback por githubId numérico
+      const num = Number(cleanId);
+      if (!isNaN(num) && num > 0) {
+        const found = await prisma.project.findUnique({
+          where: { githubId: num },
+        });
+        if (found) {
+          await prisma.project.delete({
+            where: { id: found.id },
+          });
+          revalidatePath('/');
+          revalidatePath('/projects');
+          revalidatePath('/admin');
+          return { success: true, message: 'Projeto removido com sucesso.' };
+        }
+      }
+
+      // 3. Fallback por título exato
+      const foundByTitle = await prisma.project.findFirst({
+        where: { title: cleanId },
+      });
+      if (foundByTitle) {
+        await prisma.project.delete({
+          where: { id: foundByTitle.id },
+        });
+        revalidatePath('/');
+        revalidatePath('/projects');
+        revalidatePath('/admin');
+        return { success: true, message: 'Projeto removido com sucesso.' };
+      }
+
+      throw directErr;
+    }
 
     revalidatePath('/');
     revalidatePath('/projects');
@@ -262,7 +299,7 @@ export async function deleteProject(id: string): Promise<ActionState> {
     console.error('Erro ao deletar projeto:', error);
     return {
       success: false,
-      message: 'Não foi possível excluir o projeto.',
+      message: error instanceof Error ? error.message : 'Não foi possível excluir o projeto.',
     };
   }
 }
