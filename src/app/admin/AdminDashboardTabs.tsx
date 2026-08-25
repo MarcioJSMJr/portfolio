@@ -1,14 +1,13 @@
 'use client';
 
 import { useState } from 'react';
+import { AdminAnalyticsDashboard } from './AdminAnalyticsDashboard';
+import { ProjectsManager } from './ProjectsManager';
 import { ProfileForm } from './ProfileForm';
 import { QuickLinkForm } from './QuickLinkForm';
-import { ProjectForm } from './ProjectForm';
 import { PostForm } from './PostForm';
-import { DeleteProjectButton } from './DeleteProjectButton';
 import { DeletePostButton, TogglePostButton } from './DeletePostButton';
-import { User, Link2, FolderGit2, BookOpen, ExternalLink, Layers } from 'lucide-react';
-import { GithubIcon } from '@/components/icons';
+import { LayoutDashboard, FolderGit2, BookOpen, Link2, User, ExternalLink, PlusCircle } from 'lucide-react';
 import Link from 'next/link';
 
 interface AdminDashboardTabsProps {
@@ -32,12 +31,16 @@ interface AdminDashboardTabsProps {
   }>;
   projects: Array<{
     id: string;
+    githubId?: number | null;
     title: string;
     description: string;
     tags: string[];
     repoUrl: string | null;
     liveUrl: string | null;
     imageUrl: string | null;
+    stars?: number;
+    isCustom?: boolean;
+    published?: boolean;
     createdAt: Date;
   }>;
   posts: Array<{
@@ -56,42 +59,29 @@ export function AdminDashboardTabs({
   projects,
   posts,
 }: AdminDashboardTabsProps) {
-  const [activeTab, setActiveTab] = useState<'profile' | 'links' | 'projects' | 'posts'>('profile');
+  const [activeTab, setActiveTab] = useState<'overview' | 'projects' | 'posts' | 'links' | 'profile'>('overview');
 
   return (
     <div className="space-y-8">
-      {/* Abas de Navegação */}
+      {/* Abas de Navegação Superiores */}
       <div className="flex flex-wrap items-center gap-2 p-1.5 rounded-2xl bg-neutral-100 dark:bg-neutral-900/80 border border-neutral-200 dark:border-neutral-800 w-fit shadow-sm transition-colors">
-        {/* Aba Perfil */}
+        {/* Aba 1: Visão Geral */}
         <button
-          onClick={() => setActiveTab('profile')}
-          className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium transition-all cursor-pointer ${
-            activeTab === 'profile'
+          onClick={() => setActiveTab('overview')}
+          className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-medium transition-all cursor-pointer ${
+            activeTab === 'overview'
               ? 'bg-blue-600 text-white shadow-md shadow-blue-500/20'
               : 'text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white hover:bg-neutral-200/60 dark:hover:bg-neutral-800/50'
           }`}
         >
-          <User className="w-4 h-4" />
-          <span>Perfil</span>
+          <LayoutDashboard className="w-4 h-4" />
+          <span>Visão Geral</span>
         </button>
 
-        {/* Aba Links do Hub */}
-        <button
-          onClick={() => setActiveTab('links')}
-          className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium transition-all cursor-pointer ${
-            activeTab === 'links'
-              ? 'bg-cyan-600 text-white shadow-md shadow-cyan-500/20'
-              : 'text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white hover:bg-neutral-200/60 dark:hover:bg-neutral-800/50'
-          }`}
-        >
-          <Link2 className="w-4 h-4" />
-          <span>Links do Hub ({quickLinks.length})</span>
-        </button>
-
-        {/* Aba Projetos */}
+        {/* Aba 2: Projetos */}
         <button
           onClick={() => setActiveTab('projects')}
-          className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium transition-all cursor-pointer ${
+          className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-medium transition-all cursor-pointer ${
             activeTab === 'projects'
               ? 'bg-indigo-600 text-white shadow-md shadow-indigo-500/20'
               : 'text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white hover:bg-neutral-200/60 dark:hover:bg-neutral-800/50'
@@ -101,10 +91,10 @@ export function AdminDashboardTabs({
           <span>Projetos ({projects.length})</span>
         </button>
 
-        {/* Aba Diário */}
+        {/* Aba 3: Diário */}
         <button
           onClick={() => setActiveTab('posts')}
-          className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium transition-all cursor-pointer ${
+          className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-medium transition-all cursor-pointer ${
             activeTab === 'posts'
               ? 'bg-purple-600 text-white shadow-md shadow-purple-500/20'
               : 'text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white hover:bg-neutral-200/60 dark:hover:bg-neutral-800/50'
@@ -113,116 +103,52 @@ export function AdminDashboardTabs({
           <BookOpen className="w-4 h-4" />
           <span>Diário ({posts.length})</span>
         </button>
+
+        {/* Aba 4: Links do Hub */}
+        <button
+          onClick={() => setActiveTab('links')}
+          className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-medium transition-all cursor-pointer ${
+            activeTab === 'links'
+              ? 'bg-cyan-600 text-white shadow-md shadow-cyan-500/20'
+              : 'text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white hover:bg-neutral-200/60 dark:hover:bg-neutral-800/50'
+          }`}
+        >
+          <Link2 className="w-4 h-4" />
+          <span>Links do Hub ({quickLinks.length})</span>
+        </button>
+
+        {/* Aba 5: Perfil */}
+        <button
+          onClick={() => setActiveTab('profile')}
+          className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-medium transition-all cursor-pointer ${
+            activeTab === 'profile'
+              ? 'bg-emerald-600 text-white shadow-md shadow-emerald-500/20'
+              : 'text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white hover:bg-neutral-200/60 dark:hover:bg-neutral-800/50'
+          }`}
+        >
+          <User className="w-4 h-4" />
+          <span>Perfil</span>
+        </button>
       </div>
 
-      {/* Conteúdo da Aba Perfil */}
-      {activeTab === 'profile' && (
-        <div className="animate-in fade-in duration-200">
-          <ProfileForm initialData={profile} />
-        </div>
+      {/* Conteúdo Aba 1: Visão Geral (Dashboard Analítico) */}
+      {activeTab === 'overview' && (
+        <AdminAnalyticsDashboard
+          projects={projects}
+          posts={posts}
+          quickLinks={quickLinks}
+          onNavigateTab={(tab) => setActiveTab(tab)}
+        />
       )}
 
-      {/* Conteúdo da Aba Links do Hub */}
-      {activeTab === 'links' && (
-        <div className="animate-in fade-in duration-200">
-          <QuickLinkForm links={quickLinks} />
-        </div>
-      )}
-
-      {/* Conteúdo da Aba Projetos */}
+      {/* Conteúdo Aba 2: Projetos com Modais & Filtros */}
       {activeTab === 'projects' && (
-        <div className="space-y-8 animate-in fade-in duration-200">
-          <ProjectForm />
-
-          {/* Listagem de Projetos */}
-          <section className="space-y-6 pt-4">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2.5">
-                <Layers className="w-5 h-5 text-indigo-500" />
-                <h2 className="text-xl font-bold text-neutral-900 dark:text-white tracking-tight">
-                  Projetos Publicados
-                </h2>
-              </div>
-              <span className="text-xs px-2.5 py-1 rounded-full bg-neutral-100 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 text-neutral-600 dark:text-neutral-400 font-mono">
-                {projects.length} {projects.length === 1 ? 'projeto' : 'projetos'}
-              </span>
-            </div>
-
-            {projects.length === 0 ? (
-              <div className="p-8 rounded-2xl bg-neutral-100/70 dark:bg-neutral-900/40 border border-neutral-200 dark:border-neutral-800/80 text-center space-y-2">
-                <p className="text-neutral-600 dark:text-neutral-400 text-sm">Nenhum projeto cadastrado no momento.</p>
-                <p className="text-neutral-500 dark:text-neutral-500 text-xs">
-                  Utilize o formulário acima para cadastrar seu primeiro projeto.
-                </p>
-              </div>
-            ) : (
-              <div className="grid grid-cols-1 gap-4">
-                {projects.map((project) => (
-                  <div
-                    key={project.id}
-                    className="p-5 rounded-2xl bg-white dark:bg-neutral-900/60 border border-neutral-200 dark:border-neutral-800/80 hover:border-neutral-300 dark:hover:border-neutral-700 transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-sm"
-                  >
-                    <div className="space-y-2 max-w-xl">
-                      <div className="flex items-center gap-3">
-                        <h3 className="font-semibold text-neutral-900 dark:text-white text-base">{project.title}</h3>
-                        <span className="text-[11px] text-neutral-500 font-mono">
-                          {new Date(project.createdAt).toLocaleDateString('pt-BR')}
-                        </span>
-                      </div>
-
-                      <p className="text-neutral-600 dark:text-neutral-400 text-xs leading-relaxed line-clamp-2 font-light">
-                        {project.description}
-                      </p>
-
-                      <div className="flex flex-wrap gap-1.5 pt-1">
-                        {project.tags.map((tag) => (
-                          <span
-                            key={tag}
-                            className="text-[11px] px-2 py-0.5 rounded-md bg-neutral-100 dark:bg-neutral-800/80 text-neutral-700 dark:text-neutral-300 border border-neutral-200 dark:border-neutral-700/60 font-mono"
-                          >
-                            {tag}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-
-                    <div className="flex items-center gap-3 sm:self-center shrink-0 pt-3 sm:pt-0 border-t sm:border-t-0 border-neutral-100 dark:border-neutral-800/60 justify-between sm:justify-end">
-                      <div className="flex items-center gap-3 text-xs">
-                        {project.repoUrl && (
-                          <a
-                            href={project.repoUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="inline-flex items-center gap-1 text-blue-600 dark:text-blue-400 hover:text-blue-500 dark:hover:text-blue-300 transition-colors"
-                          >
-                            <GithubIcon className="w-3.5 h-3.5" />
-                            <span>Repo</span>
-                          </a>
-                        )}
-                        {project.liveUrl && (
-                          <a
-                            href={project.liveUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="inline-flex items-center gap-1 text-indigo-600 dark:text-indigo-400 hover:text-indigo-500 dark:hover:text-indigo-300 transition-colors"
-                          >
-                            <ExternalLink className="w-3.5 h-3.5" />
-                            <span>Live</span>
-                          </a>
-                        )}
-                      </div>
-
-                      <DeleteProjectButton id={project.id} title={project.title} />
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-          </section>
+        <div className="animate-in fade-in duration-200">
+          <ProjectsManager projects={projects} />
         </div>
       )}
 
-      {/* Conteúdo da Aba Diário */}
+      {/* Conteúdo Aba 3: Diário */}
       {activeTab === 'posts' && (
         <div className="space-y-8 animate-in fade-in duration-200">
           <PostForm />
@@ -244,7 +170,7 @@ export function AdminDashboardTabs({
             {posts.length === 0 ? (
               <div className="p-8 rounded-2xl bg-neutral-100/70 dark:bg-neutral-900/40 border border-neutral-200 dark:border-neutral-800/80 text-center space-y-2">
                 <p className="text-neutral-600 dark:text-neutral-400 text-sm">Nenhum post publicado no diário ainda.</p>
-                <p className="text-neutral-500 dark:text-neutral-500 text-xs">
+                <p className="text-neutral-500 text-xs">
                   Utilize o formulário acima para escrever sua primeira nota ou artigo.
                 </p>
               </div>
@@ -298,6 +224,20 @@ export function AdminDashboardTabs({
               </div>
             )}
           </section>
+        </div>
+      )}
+
+      {/* Conteúdo Aba 4: Links do Hub */}
+      {activeTab === 'links' && (
+        <div className="animate-in fade-in duration-200">
+          <QuickLinkForm links={quickLinks} />
+        </div>
+      )}
+
+      {/* Conteúdo Aba 5: Perfil */}
+      {activeTab === 'profile' && (
+        <div className="animate-in fade-in duration-200">
+          <ProfileForm initialData={profile} />
         </div>
       )}
     </div>

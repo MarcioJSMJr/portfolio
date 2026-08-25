@@ -2,19 +2,20 @@ import Link from 'next/link';
 import { prisma } from '@/lib/prisma';
 import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
-import { ProjectsSection } from '@/components/ProjectsSection';
+import { ProjectsExplorer } from '@/components/ProjectsExplorer';
 import { ArrowLeft, Sparkles } from 'lucide-react';
 
 export const dynamic = 'force-dynamic';
 
 export const metadata = {
   title: 'Projetos & Portfólio | Desenvolvedor Full Stack',
-  description: 'Aplicações reais, sistemas e experimentos construídos com TypeScript, Next.js e PostgreSQL.',
+  description: 'Aplicações reais, sistemas e repositórios construídos com TypeScript, Next.js e PostgreSQL.',
 };
 
 export default async function ProjectsPage() {
   const projects = await prisma.project.findMany({
-    orderBy: { createdAt: 'desc' },
+    where: { published: true },
+    orderBy: [{ stars: 'desc' }, { createdAt: 'desc' }],
   });
 
   return (
@@ -43,12 +44,12 @@ export default async function ProjectsPage() {
             Projetos & Aplicações
           </h1>
           <p className="text-neutral-600 dark:text-neutral-400 text-sm sm:text-base max-w-2xl leading-relaxed font-light">
-            Uma seleção dos meus principais projetos em produção e estudos práticos, cobrindo front-end moderno, back-end, bancos relacionais e APIs escaláveis.
+            Explore meus principais projetos, repositórios públicos e sistemas em produção com filtros por stack e busca instantânea.
           </p>
         </header>
 
-        {/* Seção de Projetos */}
-        <ProjectsSection projects={projects} />
+        {/* Explorador Interativo de Projetos */}
+        <ProjectsExplorer projects={projects} itemsPerPage={6} />
       </main>
 
       <Footer />

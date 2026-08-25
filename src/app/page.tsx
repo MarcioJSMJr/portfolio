@@ -16,7 +16,7 @@ export default async function Home() {
   const [profile, customLinks, projectsCount, postsCount] = await Promise.all([
     prisma.profile.findUnique({ where: { id: 'me' } }).catch(() => null),
     prisma.quickLink.findMany({ orderBy: { order: 'asc' } }).catch(() => []),
-    prisma.project.count().catch(() => 0),
+    prisma.project.count({ where: { published: true } }).catch(() => 0),
     prisma.post.count({ where: { published: true } }).catch(() => 0),
   ]);
 

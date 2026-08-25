@@ -42,7 +42,6 @@ export default async function AdminPage() {
           </Link>
 
           <div className="flex items-center gap-2.5">
-            <ThemeToggle />
             <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-neutral-100 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 text-neutral-700 dark:text-neutral-300">
               <Shield className="w-3.5 h-3.5 text-blue-500" />
               Sessão Ativa
@@ -51,6 +50,7 @@ export default async function AdminPage() {
               <Database className="w-3 h-3" />
               Supabase
             </span>
+            <ThemeToggle />
             <AdminLogoutButton />
           </div>
         </div>

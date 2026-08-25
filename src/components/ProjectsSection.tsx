@@ -1,14 +1,18 @@
-import { ExternalLink, FolderGit2, Sparkles } from 'lucide-react';
+import { ExternalLink, FolderGit2, Star } from 'lucide-react';
 import { GithubIcon } from '@/components/icons';
 
 export interface ProjectItem {
   id: string;
+  githubId?: number | null;
   title: string;
   description: string;
   tags: string[];
   repoUrl: string | null;
   liveUrl: string | null;
   imageUrl: string | null;
+  stars?: number;
+  isCustom?: boolean;
+  published?: boolean;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -28,9 +32,9 @@ export function ProjectsSection({ projects }: ProjectsSectionProps) {
               <FolderGit2 className="w-7 h-7" />
             </div>
             <div className="space-y-1">
-              <h3 className="text-lg font-bold text-neutral-900 dark:text-white">Nenhum projeto cadastrado no momento</h3>
+              <h3 className="text-lg font-bold text-neutral-900 dark:text-white">Nenhum projeto exibido no momento</h3>
               <p className="text-sm text-neutral-600 dark:text-neutral-400">
-                Novos projetos e estudos práticos serão publicados aqui em breve.
+                Novos projetos e repositórios sincronizados serão exibidos aqui em breve.
               </p>
             </div>
           </div>
@@ -58,18 +62,34 @@ export function ProjectsSection({ projects }: ProjectsSectionProps) {
                       <div className="w-10 h-10 rounded-xl bg-white dark:bg-neutral-800/60 border border-neutral-200 dark:border-neutral-700/60 flex items-center justify-center text-neutral-500 dark:text-neutral-400">
                         <FolderGit2 className="w-5 h-5" />
                       </div>
-                      <span className="text-xs font-mono text-neutral-500">
-                        {new Date(project.createdAt).toLocaleDateString('pt-BR')}
-                      </span>
+                      <div className="flex items-center gap-2">
+                        {(project.stars ?? 0) > 0 && (
+                          <span className="inline-flex items-center gap-1 text-xs font-mono px-2 py-0.5 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-600 dark:text-amber-400">
+                            <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
+                            <span>{project.stars}</span>
+                          </span>
+                        )}
+                        <span className="text-xs font-mono text-neutral-500">
+                          {new Date(project.createdAt).toLocaleDateString('pt-BR')}
+                        </span>
+                      </div>
                     </div>
                   )}
 
                   {/* Conteúdo do Card */}
                   <div className="p-6 space-y-4">
                     <div className="space-y-2">
-                      <h3 className="text-xl sm:text-2xl font-bold text-neutral-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-300 transition-colors tracking-tight">
-                        {project.title}
-                      </h3>
+                      <div className="flex items-center justify-between gap-2">
+                        <h3 className="text-xl sm:text-2xl font-bold text-neutral-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-300 transition-colors tracking-tight">
+                          {project.title}
+                        </h3>
+                        {project.imageUrl && (project.stars ?? 0) > 0 && (
+                          <span className="inline-flex items-center gap-1 text-xs font-mono px-2.5 py-0.5 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-600 dark:text-amber-400 shrink-0">
+                            <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+                            <span>{project.stars}</span>
+                          </span>
+                        )}
+                      </div>
                       <p className="text-neutral-600 dark:text-neutral-400 text-sm leading-relaxed line-clamp-3 font-light">
                         {project.description}
                       </p>
