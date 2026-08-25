@@ -5,9 +5,11 @@ import { ProfileForm } from './ProfileForm';
 import { QuickLinkForm } from './QuickLinkForm';
 import { ProjectForm } from './ProjectForm';
 import { PostForm } from './PostForm';
+import { SyncGithubButton } from './SyncGithubButton';
+import { ToggleProjectPublishButton } from './ToggleProjectPublishButton';
 import { DeleteProjectButton } from './DeleteProjectButton';
 import { DeletePostButton, TogglePostButton } from './DeletePostButton';
-import { User, Link2, FolderGit2, BookOpen, ExternalLink, Layers } from 'lucide-react';
+import { User, Link2, FolderGit2, BookOpen, ExternalLink, Layers, Star, Sparkles } from 'lucide-react';
 import { GithubIcon } from '@/components/icons';
 import Link from 'next/link';
 
@@ -32,12 +34,16 @@ interface AdminDashboardTabsProps {
   }>;
   projects: Array<{
     id: string;
+    githubId?: number | null;
     title: string;
     description: string;
     tags: string[];
     repoUrl: string | null;
     liveUrl: string | null;
     imageUrl: string | null;
+    stars?: number;
+    isCustom?: boolean;
+    published?: boolean;
     createdAt: Date;
   }>;
   posts: Array<{
@@ -132,6 +138,21 @@ export function AdminDashboardTabs({
       {/* Conteúdo da Aba Projetos */}
       {activeTab === 'projects' && (
         <div className="space-y-8 animate-in fade-in duration-200">
+          {/* Ações de Topo: Sincronização com GitHub */}
+          <div className="p-6 rounded-2xl bg-white dark:bg-neutral-900/70 border border-neutral-200 dark:border-neutral-800 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div className="space-y-1">
+              <h3 className="text-base font-bold text-neutral-900 dark:text-white flex items-center gap-2">
+                <GithubIcon className="w-4 h-4" />
+                <span>Sincronização com Repositórios do GitHub</span>
+              </h3>
+              <p className="text-xs text-neutral-600 dark:text-neutral-400 font-light">
+                Importe automaticamente seus repositórios públicos, linguagens, tags e estrelas.
+              </p>
+            </div>
+            <SyncGithubButton />
+          </div>
+
+          {/* Formulário de Cadastro Manual */}
           <ProjectForm />
 
           {/* Listagem de Projetos */}
@@ -140,7 +161,7 @@ export function AdminDashboardTabs({
               <div className="flex items-center gap-2.5">
                 <Layers className="w-5 h-5 text-indigo-500" />
                 <h2 className="text-xl font-bold text-neutral-900 dark:text-white tracking-tight">
-                  Projetos Publicados
+                  Projetos no Sistema
                 </h2>
               </div>
               <span className="text-xs px-2.5 py-1 rounded-full bg-neutral-100 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 text-neutral-600 dark:text-neutral-400 font-mono">
@@ -152,7 +173,7 @@ export function AdminDashboardTabs({
               <div className="p-8 rounded-2xl bg-neutral-100/70 dark:bg-neutral-900/40 border border-neutral-200 dark:border-neutral-800/80 text-center space-y-2">
                 <p className="text-neutral-600 dark:text-neutral-400 text-sm">Nenhum projeto cadastrado no momento.</p>
                 <p className="text-neutral-500 dark:text-neutral-500 text-xs">
-                  Utilize o formulário acima para cadastrar seu primeiro projeto.
+                  Sincronize com o GitHub ou utilize o formulário acima para cadastrar seu primeiro projeto.
                 </p>
               </div>
             ) : (
@@ -163,8 +184,28 @@ export function AdminDashboardTabs({
                     className="p-5 rounded-2xl bg-white dark:bg-neutral-900/60 border border-neutral-200 dark:border-neutral-800/80 hover:border-neutral-300 dark:hover:border-neutral-700 transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-sm"
                   >
                     <div className="space-y-2 max-w-xl">
-                      <div className="flex items-center gap-3">
+                      <div className="flex flex-wrap items-center gap-2.5">
                         <h3 className="font-semibold text-neutral-900 dark:text-white text-base">{project.title}</h3>
+
+                        {/* Badge de Origem */}
+                        <span
+                          className={`text-[10px] font-mono px-2 py-0.5 rounded-full border ${
+                            project.isCustom
+                              ? 'bg-purple-500/10 border-purple-500/20 text-purple-600 dark:text-purple-400'
+                              : 'bg-cyan-500/10 border-cyan-500/20 text-cyan-600 dark:text-cyan-400'
+                          }`}
+                        >
+                          {project.isCustom ? 'Manual' : 'GitHub'}
+                        </span>
+
+                        {/* Estrelas */}
+                        {(project.stars ?? 0) > 0 && (
+                          <span className="inline-flex items-center gap-1 text-[11px] font-mono px-2 py-0.5 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-600 dark:text-amber-400">
+                            <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
+                            <span>{project.stars}</span>
+                          </span>
+                        )}
+
                         <span className="text-[11px] text-neutral-500 font-mono">
                           {new Date(project.createdAt).toLocaleDateString('pt-BR')}
                         </span>
@@ -187,7 +228,7 @@ export function AdminDashboardTabs({
                     </div>
 
                     <div className="flex items-center gap-3 sm:self-center shrink-0 pt-3 sm:pt-0 border-t sm:border-t-0 border-neutral-100 dark:border-neutral-800/60 justify-between sm:justify-end">
-                      <div className="flex items-center gap-3 text-xs">
+                      <div className="flex items-center gap-2.5 text-xs">
                         {project.repoUrl && (
                           <a
                             href={project.repoUrl}
@@ -212,6 +253,11 @@ export function AdminDashboardTabs({
                         )}
                       </div>
 
+                      <ToggleProjectPublishButton
+                        id={project.id}
+                        published={project.published !== false}
+                        title={project.title}
+                      />
                       <DeleteProjectButton id={project.id} title={project.title} />
                     </div>
                   </div>

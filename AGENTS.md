@@ -10,7 +10,7 @@
 ## 🗄️ Esquema do Banco de Dados
 - **`Profile`**: `id` ("me"), `name`, `bio`, `avatar`, `email`, `github`, `linkedin`, `twitter`
 - **`QuickLink`**: `id`, `title`, `url`, `icon`, `highlight` (Boolean), `order` (Int)
-- **`Project`**: `id`, `title`, `description`, `tags`, `repoUrl`, `liveUrl`, `imageUrl`, `createdAt`, `updatedAt`
+- **`Project`**: `id`, `githubId` (Int? @unique), `title`, `description`, `tags`, `repoUrl`, `liveUrl`, `imageUrl`, `stars` (Int), `isCustom` (Boolean), `published` (Boolean), `createdAt`, `updatedAt`
 - **`Post`**: `id`, `title`, `slug` (unique), `content` (Text), `published` (Boolean), `createdAt`, `updatedAt`
 
 ## 📌 Configurações de Conexão & Segurança
@@ -28,4 +28,5 @@
 - [x] Suporte a Tema Dinâmico Claro/Escuro (Dark/Light mode via `next-themes` com `ThemeToggle` na Navbar, Hub e Admin).
 - [x] Auditoria de dinamismo total no Hub, Projetos, Diário e Links (100% integrados ao Supabase via Prisma).
 - [x] Integração com `@vercel/speed-insights` e `@vercel/analytics` no RootLayout para métricas de performance e tráfego.
+- [x] Sincronização Automática com API do GitHub (`src/actions/github-sync.ts`) com upsert, estrelas, tags e toggle de visibilidade.
 - [ ] Conectar o projeto na Vercel e configurar as variáveis de ambiente de produção.

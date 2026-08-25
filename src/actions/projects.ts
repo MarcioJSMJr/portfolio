@@ -2,6 +2,7 @@
 
 import { revalidatePath } from 'next/cache';
 import { prisma } from '@/lib/prisma';
+import { isAdminAuthenticated } from '@/lib/auth';
 
 export interface ActionState {
   success?: boolean;
@@ -30,13 +31,18 @@ function isValidUrl(url: string): boolean {
 }
 
 /**
- * Server Action para cadastrar um novo projeto no banco de dados.
+ * Server Action para cadastrar um novo projeto manualmente no banco de dados.
  */
 export async function createProject(
   prevState: ActionState | null,
   formData: FormData
 ): Promise<ActionState> {
   try {
+    const isAuth = await isAdminAuthenticated();
+    if (!isAuth) {
+      return { success: false, message: 'Acesso não autorizado.' };
+    }
+
     const title = (formData.get('title') as string | null)?.trim() || '';
     const description = (formData.get('description') as string | null)?.trim() || '';
     const rawTags = (formData.get('tags') as string | null)?.trim() || '';
@@ -103,11 +109,14 @@ export async function createProject(
         repoUrl: repoUrl || null,
         liveUrl: liveUrl || null,
         imageUrl: imageUrl || null,
+        isCustom: true,
+        published: true,
       },
     });
 
     // 6. Revalidação das rotas
     revalidatePath('/');
+    revalidatePath('/projects');
     revalidatePath('/admin');
 
     return {
@@ -131,6 +140,11 @@ export async function createProject(
  */
 export async function deleteProject(id: string): Promise<ActionState> {
   try {
+    const isAuth = await isAdminAuthenticated();
+    if (!isAuth) {
+      return { success: false, message: 'Acesso não autorizado.' };
+    }
+
     if (!id) {
       return { success: false, message: 'ID do projeto inválido.' };
     }
@@ -140,6 +154,7 @@ export async function deleteProject(id: string): Promise<ActionState> {
     });
 
     revalidatePath('/');
+    revalidatePath('/projects');
     revalidatePath('/admin');
 
     return { success: true, message: 'Projeto removido com sucesso.' };

@@ -9,12 +9,13 @@ export const dynamic = 'force-dynamic';
 
 export const metadata = {
   title: 'Projetos & Portfólio | Desenvolvedor Full Stack',
-  description: 'Aplicações reais, sistemas e experimentos construídos com TypeScript, Next.js e PostgreSQL.',
+  description: 'Aplicações reais, sistemas e repositórios construídos com TypeScript, Next.js e PostgreSQL.',
 };
 
 export default async function ProjectsPage() {
   const projects = await prisma.project.findMany({
-    orderBy: { createdAt: 'desc' },
+    where: { published: true },
+    orderBy: [{ stars: 'desc' }, { createdAt: 'desc' }],
   });
 
   return (
@@ -43,7 +44,7 @@ export default async function ProjectsPage() {
             Projetos & Aplicações
           </h1>
           <p className="text-neutral-600 dark:text-neutral-400 text-sm sm:text-base max-w-2xl leading-relaxed font-light">
-            Uma seleção dos meus principais projetos em produção e estudos práticos, cobrindo front-end moderno, back-end, bancos relacionais e APIs escaláveis.
+            Uma seleção dos meus principais projetos em produção e repositórios práticos, cobrindo front-end moderno, back-end, bancos relacionais e APIs escaláveis.
           </p>
         </header>
 
