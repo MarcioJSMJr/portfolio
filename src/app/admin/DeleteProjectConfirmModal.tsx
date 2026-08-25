@@ -21,7 +21,7 @@ export function DeleteProjectConfirmModal({
 
   const handleDelete = () => {
     startTransition(async () => {
-      const res = await deleteProject(project.id);
+      const res = await deleteProject(project.id || project.title);
       if (res.success) {
         onClose();
       } else {
