@@ -50,8 +50,8 @@ export default async function AdminPage() {
               <Database className="w-3 h-3" />
               Supabase
             </span>
-            <ThemeToggle />
             <AdminLogoutButton />
+            <ThemeToggle />
           </div>
         </div>
 
