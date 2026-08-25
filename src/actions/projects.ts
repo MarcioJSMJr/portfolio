@@ -136,6 +136,106 @@ export async function createProject(
 }
 
 /**
+ * Server Action para atualizar um projeto existente no banco de dados.
+ */
+export async function updateProject(
+  prevState: ActionState | null,
+  formData: FormData
+): Promise<ActionState> {
+  try {
+    const isAuth = await isAdminAuthenticated();
+    if (!isAuth) {
+      return { success: false, message: 'Acesso não autorizado.' };
+    }
+
+    const id = (formData.get('id') as string | null)?.trim() || '';
+    if (!id) {
+      return { success: false, message: 'ID do projeto não fornecido.' };
+    }
+
+    const title = (formData.get('title') as string | null)?.trim() || '';
+    const description = (formData.get('description') as string | null)?.trim() || '';
+    const rawTags = (formData.get('tags') as string | null)?.trim() || '';
+    const repoUrl = (formData.get('repoUrl') as string | null)?.trim() || '';
+    const liveUrl = (formData.get('liveUrl') as string | null)?.trim() || '';
+    const imageUrl = (formData.get('imageUrl') as string | null)?.trim() || '';
+    const published = formData.get('published') === 'true' || formData.get('published') === 'on';
+
+    const errors: NonNullable<ActionState['errors']> = {};
+
+    if (!title || title.length < 3) {
+      errors.title = ['O título deve conter ao menos 3 caracteres.'];
+    }
+
+    if (!description || description.length < 10) {
+      errors.description = ['A descrição deve ter no mínimo 10 caracteres.'];
+    }
+
+    const tags = rawTags
+      ? rawTags
+          .split(',')
+          .map((t) => t.trim())
+          .filter((t) => t.length > 0)
+      : [];
+
+    if (tags.length === 0) {
+      errors.tags = ['Informe ao menos uma tecnologia/tag.'];
+    }
+
+    if (repoUrl && !isValidUrl(repoUrl)) {
+      errors.repoUrl = ['Insira uma URL válida para o repositório.'];
+    }
+
+    if (liveUrl && !isValidUrl(liveUrl)) {
+      errors.liveUrl = ['Insira uma URL válida para a demonstração.'];
+    }
+
+    if (imageUrl && !isValidUrl(imageUrl)) {
+      errors.imageUrl = ['Insira uma URL válida para a imagem de capa.'];
+    }
+
+    if (Object.keys(errors).length > 0) {
+      return {
+        success: false,
+        message: 'Por favor, corrija os erros no formulário.',
+        errors,
+      };
+    }
+
+    await prisma.project.update({
+      where: { id },
+      data: {
+        title,
+        description,
+        tags,
+        repoUrl: repoUrl || null,
+        liveUrl: liveUrl || null,
+        imageUrl: imageUrl || null,
+        published,
+      },
+    });
+
+    revalidatePath('/');
+    revalidatePath('/projects');
+    revalidatePath('/admin');
+
+    return {
+      success: true,
+      message: 'Projeto atualizado com sucesso!',
+    };
+  } catch (error) {
+    console.error('Erro ao atualizar projeto:', error);
+    return {
+      success: false,
+      message: 'Ocorreu um erro ao atualizar o projeto.',
+      errors: {
+        _form: [error instanceof Error ? error.message : 'Erro desconhecido.'],
+      },
+    };
+  }
+}
+
+/**
  * Server Action auxiliar para deletar um projeto existente.
  */
 export async function deleteProject(id: string): Promise<ActionState> {

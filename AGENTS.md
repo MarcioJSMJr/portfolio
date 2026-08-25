@@ -29,4 +29,7 @@
 - [x] Auditoria de dinamismo total no Hub, Projetos, Diário e Links (100% integrados ao Supabase via Prisma).
 - [x] Integração com `@vercel/speed-insights` e `@vercel/analytics` no RootLayout para métricas de performance e tráfego.
 - [x] Sincronização Automática com API do GitHub (`src/actions/github-sync.ts`) com upsert, estrelas, tags e toggle de visibilidade.
+- [x] Vitrines Públicas Interativas (`/projects` e `/journal`) com busca instantânea, filtro por tags/stack e paginação.
+- [x] Painel Analítico de Visão Geral no Admin (`/admin`) com KPIs, gráfico de distribuição de stack e feed de atividades.
+- [x] Gerenciamento de Projetos via Modais Elegantes (Criação, Edição, Alternância de Visibilidade e Confirmação de Exclusão).
 - [ ] Conectar o projeto na Vercel e configurar as variáveis de ambiente de produção.

@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { prisma } from '@/lib/prisma';
 import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
-import { ProjectsSection } from '@/components/ProjectsSection';
+import { ProjectsExplorer } from '@/components/ProjectsExplorer';
 import { ArrowLeft, Sparkles } from 'lucide-react';
 
 export const dynamic = 'force-dynamic';
@@ -44,12 +44,12 @@ export default async function ProjectsPage() {
             Projetos & Aplicações
           </h1>
           <p className="text-neutral-600 dark:text-neutral-400 text-sm sm:text-base max-w-2xl leading-relaxed font-light">
-            Uma seleção dos meus principais projetos em produção e repositórios práticos, cobrindo front-end moderno, back-end, bancos relacionais e APIs escaláveis.
+            Explore meus principais projetos, repositórios públicos e sistemas em produção com filtros por stack e busca instantânea.
           </p>
         </header>
 
-        {/* Seção de Projetos */}
-        <ProjectsSection projects={projects} />
+        {/* Explorador Interativo de Projetos */}
+        <ProjectsExplorer projects={projects} itemsPerPage={6} />
       </main>
 
       <Footer />
