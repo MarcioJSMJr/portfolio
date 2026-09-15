@@ -2,7 +2,8 @@
 
 import { useState, useMemo } from 'react';
 import Link from 'next/link';
-import { Search, BookOpen, Calendar, Clock, ArrowRight, X, Newspaper, Sparkles } from 'lucide-react';
+import { Search, Calendar, Clock, ArrowRight, X, Newspaper } from 'lucide-react';
+import { EmptyState } from '@/components/ui';
 
 export interface PostItem {
   id: string;
@@ -102,25 +103,24 @@ export function JournalExplorer({
 
       {/* Lista de Artigos */}
       {filteredPosts.length === 0 ? (
-        <div className="p-12 sm:p-16 rounded-3xl bg-neutral-100/70 dark:bg-neutral-900/40 border border-neutral-200 dark:border-neutral-800/80 text-center space-y-4 max-w-lg mx-auto">
-          <div className="w-12 h-12 rounded-2xl bg-purple-500/10 border border-purple-500/20 text-purple-600 dark:text-purple-400 flex items-center justify-center mx-auto">
-            <Newspaper className="w-6 h-6" />
-          </div>
-          <div className="space-y-1">
-            <h3 className="text-base font-bold text-neutral-900 dark:text-white">
-              Nenhum post encontrado
-            </h3>
-            <p className="text-xs text-neutral-600 dark:text-neutral-400 font-light">
-              Nenhum artigo corresponde à busca &quot;{searchTerm}&quot;.
-            </p>
-          </div>
-          <button
-            onClick={clearSearch}
-            className="px-4 py-2 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 text-xs font-medium text-neutral-800 dark:text-neutral-200 hover:bg-neutral-50 dark:hover:bg-neutral-800 transition-all cursor-pointer shadow-sm"
-          >
-            Ver todos os artigos
-          </button>
-        </div>
+        <EmptyState
+          tone="purple"
+          icon={<Newspaper className="w-6 h-6" />}
+          title="Nenhum post encontrado"
+          description={
+            searchTerm
+              ? `Nenhum artigo corresponde à busca "${searchTerm}".`
+              : 'Ainda não há artigos publicados no diário.'
+          }
+          action={
+            <button
+              onClick={clearSearch}
+              className="px-4 py-2 rounded-xl bg-surface border border-border text-xs font-medium text-neutral-800 dark:text-neutral-200 hover:bg-neutral-50 dark:hover:bg-neutral-800 transition-all cursor-pointer shadow-sm"
+            >
+              Ver todos os artigos
+            </button>
+          }
+        />
       ) : (
         <div className="grid grid-cols-1 gap-6">
           {currentPosts.map((post) => {
@@ -131,7 +131,7 @@ export function JournalExplorer({
               <Link
                 key={post.id}
                 href={`/journal/${post.slug}`}
-                className="p-6 sm:p-7 rounded-2xl bg-white dark:bg-neutral-900/50 border border-neutral-200 dark:border-neutral-800/80 hover:border-purple-400 dark:hover:border-purple-500/40 hover:bg-neutral-50/80 dark:hover:bg-neutral-900/80 transition-all group block shadow-sm hover:shadow-md hover:shadow-purple-500/5 space-y-4"
+                className="p-6 sm:p-7 rounded-2xl bg-white/80 dark:bg-neutral-900/50 border border-border hover:border-purple-400 dark:hover:border-purple-500/40 hover:bg-neutral-50/80 dark:hover:bg-neutral-900/80 transition-all group block shadow-sm hover:shadow-xl hover:shadow-purple-500/10 hover:scale-[1.01] space-y-4 backdrop-blur-sm"
               >
                 <div className="flex flex-wrap items-center gap-3 text-xs text-neutral-500 font-mono">
                   <span className="flex items-center gap-1.5 text-purple-600 dark:text-purple-400">
