@@ -35,8 +35,14 @@ body {
 
 .page-grid {
   background-image:
-    linear-gradient(to right, rgb(115 115 115 / 0.09) 1px, transparent 1px),
-    linear-gradient(to bottom, rgb(115 115 115 / 0.09) 1px, transparent 1px);
-  background-size: 56px 56px;
-  mask-image: radial-gradient(ellipse 75% 65% at 50% 35%, #000 15%, transparent 70%);
+    linear-gradient(to right, rgb(115 115 115 / 0.18) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(115 115 115 / 0.18) 1px, transparent 1px);
+  background-size: 40px 40px;
+  mask-image: radial-gradient(ellipse 90% 80% at 50% 40%, #000 25%, transparent 78%);
+}
+
+.dark .page-grid {
+  background-image:
+    linear-gradient(to right, rgb(165 180 252 / 0.12) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(165 180 252 / 0.12) 1px, transparent 1px);
 }

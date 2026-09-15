@@ -60,9 +60,9 @@ export function HubLinkCard({
         </div>
         <div className="space-y-0.5 min-w-0">
           <span
-            className={`text-sm font-bold text-foreground flex items-center gap-2 flex-wrap ${titleHover[variant]} transition-colors`}
+            className={`text-sm font-bold text-foreground flex items-center gap-2 min-w-0 ${titleHover[variant]} transition-colors`}
           >
-            <span>{title}</span>
+            <span className="truncate">{title}</span>
             {badge}
           </span>
           {subtitle ? (

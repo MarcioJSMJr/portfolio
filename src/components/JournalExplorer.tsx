@@ -107,7 +107,11 @@ export function JournalExplorer({
           tone="purple"
           icon={<Newspaper className="w-6 h-6" />}
           title="Nenhum post encontrado"
-          description={`Nenhum artigo corresponde à busca "${searchTerm}".`}
+          description={
+            searchTerm
+              ? `Nenhum artigo corresponde à busca "${searchTerm}".`
+              : 'Ainda não há artigos publicados no diário.'
+          }
           action={
             <button
               onClick={clearSearch}

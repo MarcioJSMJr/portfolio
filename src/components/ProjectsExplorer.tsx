@@ -186,7 +186,11 @@ export function ProjectsExplorer({
         <EmptyState
           icon={<FolderGit2 className="w-6 h-6" />}
           title="Nenhum projeto encontrado"
-          description={`Nenhum resultado corresponde à busca "${searchTerm || selectedTag}".`}
+          description={
+            searchTerm || selectedTag !== 'Todos'
+              ? `Nenhum resultado corresponde à busca "${searchTerm || selectedTag}".`
+              : 'Ainda não há projetos publicados.'
+          }
           action={
             <button
               onClick={clearFilters}
