@@ -60,7 +60,7 @@ export function JournalExplorer({
   return (
     <div className="space-y-8">
       {/* Barra de Pesquisa */}
-      <div className="relative max-w-2xl">
+      <div className="relative w-full">
         <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-neutral-400">
           <Search className="w-4 h-4" />
         </div>

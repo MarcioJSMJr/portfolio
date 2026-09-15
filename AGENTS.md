@@ -28,9 +28,10 @@
 - Páginas públicas (Hub, Projetos, Diário) degradam com `.catch()` / empty state / 404 quando o banco estiver offline — não devem retornar 500.
 
 ## 🎨 Hub & Páginas Públicas
-- A home (`/`) é um **Hub estilo Linktree**: card-painel glass, kicker de disponibilidade, monograma quando não há avatar, stats (projetos/posts), `HubLinkCard` unificado e redes sociais.
+- A home (`/`) é um **Hub estilo Linktree**: card-painel glass (`max-w-xl` centralizado), kicker de disponibilidade, monograma quando não há avatar, stats (projetos/posts), `HubLinkCard` unificado e redes sociais. **O Hub permanece estreito de propósito** — não usa o Container full-bleed.
 - Fundo compartilhado via `PageShell` (grade + glow azul/roxo); tema/compartilhar ficam **dentro** do painel do Hub.
-- `/projects` e `/journal` usam `PageShell` + `PageHeader` + Navbar/Footer; explorers com busca, filtros e empty states honestos.
+- Demais páginas públicas (`/projects`, `/journal`, Navbar, Footer) usam `Container` com `size="full"` (`max-w-none` + padding lateral) para ocupar a largura da tela. Artigo individual (`/journal/[slug]`) fica em `size="lg"` para leitura confortável.
+- Navbar sticky com marca terminal + nav em segmento (estado ativo via `usePathname`).
 - `/links` apenas redireciona para `/` (clone removido; `ShareButton` vive em `src/components/`).
 
 ## 🎯 Progresso & Próximos Passos
@@ -48,6 +49,7 @@
 - [x] Gerenciamento de Projetos via Modais Elegantes (Criação, Edição, Alternância de Visibilidade e Confirmação de Exclusão).
 - [x] Hub mais presente (card-painel, monograma, stats, fundo grade+glow) e primitivos UI compartilhados (`src/components/ui/` + `src/components/hub/`).
 - [x] Limpeza de código morto: seções de landing órfãs, clone `/links`, forms admin substituídos por modais; degradê graceful sem banco.
+- [x] Layout full-bleed nas vitrines/Navbar/Footer (Hub continua centralizado); Navbar redesenhada (marca terminal + nav segmentada).
 - [ ] Reorganizar pastas do Admin por domínio (profile / projects / posts / analytics) — próximo passo.
 - [ ] Conectar o projeto na Vercel e configurar as variáveis de ambiente de produção.
 
