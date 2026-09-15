@@ -2,10 +2,17 @@
 
 ## 🛠️ Stack & Arquitetura
 - **Framework:** Next.js (App Router) com TypeScript
-- **Estilização:** Tailwind CSS
+- **Estilização:** Tailwind CSS v4 (tokens em `src/app/globals.css` via `@theme`)
 - **Banco de Dados:** PostgreSQL hospedado no Supabase (Região: São Paulo)
 - **ORM:** Prisma v7
-- **Estrutura de Pastas:** `src/app/` (páginas/rotas) e `src/lib/` (utilitários como `prisma.ts`)
+- **Tema:** `next-themes` (claro/escuro)
+- **Estrutura de Pastas:**
+  - `src/app/` — páginas/rotas (Hub `/`, Projetos, Diário, Admin, redirect `/links` → `/`)
+  - `src/components/ui/` — primitivos compartilhados (`PageShell`, `Container`, `PageHeader`, `EmptyState`, `Tag`, `SocialIconLink`)
+  - `src/components/hub/` — UI do Hub Linktree (`HubPage`, `HubProfile`, `HubLinkCard`, `HubSocials`)
+  - `src/components/` — Navbar, Footer, explorers públicos, `ShareButton`, tema
+  - `src/lib/` — utilitários (`prisma.ts`, auth)
+  - `src/actions/` — server actions (perfil, links, projetos, posts, GitHub sync)
 
 ## 🗄️ Esquema do Banco de Dados
 - **`Profile`**: `id` ("me"), `name`, `bio`, `avatar`, `email`, `github`, `linkedin`, `twitter`
@@ -18,6 +25,13 @@
 - As credenciais de banco ficam no `.env` (`DATABASE_URL` e `DIRECT_URL`).
 - Proteção da rota administrativa via `ADMIN_PASSWORD` no `.env` (com cookie HttpOnly `admin_session`).
 - O Prisma Client Singleton está instanciado em `src/lib/prisma.ts` utilizando o driver adapter `@prisma/adapter-pg` e o cliente gerado em `src/generated/prisma`.
+- Páginas públicas (Hub, Projetos, Diário) degradam com `.catch()` / empty state / 404 quando o banco estiver offline — não devem retornar 500.
+
+## 🎨 Hub & Páginas Públicas
+- A home (`/`) é um **Hub estilo Linktree**: card-painel glass, kicker de disponibilidade, monograma quando não há avatar, stats (projetos/posts), `HubLinkCard` unificado e redes sociais.
+- Fundo compartilhado via `PageShell` (grade + glow azul/roxo); tema/compartilhar ficam **dentro** do painel do Hub.
+- `/projects` e `/journal` usam `PageShell` + `PageHeader` + Navbar/Footer; explorers com busca, filtros e empty states honestos.
+- `/links` apenas redireciona para `/` (clone removido; `ShareButton` vive em `src/components/`).
 
 ## 🎯 Progresso & Próximos Passos
 - [x] Correção de tipagem e configuração do Prisma v7 com driver adapter `@prisma/adapter-pg`.
@@ -32,6 +46,9 @@
 - [x] Vitrines Públicas Interativas (`/projects` e `/journal`) com busca instantânea, filtro por tags/stack e paginação.
 - [x] Painel Analítico de Visão Geral no Admin (`/admin`) com KPIs, gráfico de distribuição de stack e feed de atividades.
 - [x] Gerenciamento de Projetos via Modais Elegantes (Criação, Edição, Alternância de Visibilidade e Confirmação de Exclusão).
+- [x] Hub mais presente (card-painel, monograma, stats, fundo grade+glow) e primitivos UI compartilhados (`src/components/ui/` + `src/components/hub/`).
+- [x] Limpeza de código morto: seções de landing órfãs, clone `/links`, forms admin substituídos por modais; degradê graceful sem banco.
+- [ ] Reorganizar pastas do Admin por domínio (profile / projects / posts / analytics) — próximo passo.
 - [ ] Conectar o projeto na Vercel e configurar as variáveis de ambiente de produção.
 
 <!-- BEGIN:nextjs-agent-rules -->
