@@ -1,8 +1,9 @@
 'use client';
 
 import { useState, useMemo } from 'react';
-import { Search, FolderGit2, Star, ExternalLink, ChevronLeft, ChevronRight, X, Sparkles, Tag } from 'lucide-react';
+import { Search, FolderGit2, Star, ExternalLink, ChevronLeft, ChevronRight, X, Tag as TagIcon } from 'lucide-react';
 import { GithubIcon } from '@/components/icons';
+import { EmptyState, Tag } from '@/components/ui';
 
 export interface ProjectItem {
   id: string;
@@ -126,7 +127,7 @@ export function ProjectsExplorer({
         {/* Filtros de Tecnologias / Tags */}
         <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
           <div className="flex items-center gap-1.5 shrink-0 text-xs text-neutral-500 mr-1 font-mono">
-            <Tag className="w-3.5 h-3.5" />
+            <TagIcon className="w-3.5 h-3.5" />
             <span>Stack:</span>
           </div>
 
@@ -182,25 +183,19 @@ export function ProjectsExplorer({
 
       {/* Grid de Projetos */}
       {filteredProjects.length === 0 ? (
-        <div className="p-12 sm:p-16 rounded-3xl bg-neutral-100/70 dark:bg-neutral-900/40 border border-neutral-200 dark:border-neutral-800/80 text-center space-y-4 max-w-lg mx-auto">
-          <div className="w-12 h-12 rounded-2xl bg-blue-500/10 border border-blue-500/20 text-blue-600 dark:text-blue-400 flex items-center justify-center mx-auto">
-            <FolderGit2 className="w-6 h-6" />
-          </div>
-          <div className="space-y-1">
-            <h3 className="text-base font-bold text-neutral-900 dark:text-white">
-              Nenhum projeto encontrado
-            </h3>
-            <p className="text-xs text-neutral-600 dark:text-neutral-400">
-              Nenhum resultado corresponde à busca &quot;{searchTerm || selectedTag}&quot;.
-            </p>
-          </div>
-          <button
-            onClick={clearFilters}
-            className="px-4 py-2 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 text-xs font-medium text-neutral-800 dark:text-neutral-200 hover:bg-neutral-50 dark:hover:bg-neutral-800 transition-all cursor-pointer shadow-sm"
-          >
-            Ver todos os projetos
-          </button>
-        </div>
+        <EmptyState
+          icon={<FolderGit2 className="w-6 h-6" />}
+          title="Nenhum projeto encontrado"
+          description={`Nenhum resultado corresponde à busca "${searchTerm || selectedTag}".`}
+          action={
+            <button
+              onClick={clearFilters}
+              className="px-4 py-2 rounded-xl bg-surface border border-border text-xs font-medium text-neutral-800 dark:text-neutral-200 hover:bg-neutral-50 dark:hover:bg-neutral-800 transition-all cursor-pointer shadow-sm"
+            >
+              Ver todos os projetos
+            </button>
+          }
+        />
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {currentProjects.map((project) => (
@@ -221,20 +216,24 @@ export function ProjectsExplorer({
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-40 pointer-events-none" />
                   </div>
                 ) : (
-                  <div className="w-full h-24 bg-gradient-to-br from-neutral-100 via-neutral-50 to-neutral-200 dark:from-neutral-900 dark:via-neutral-950 dark:to-neutral-900 border-b border-neutral-200 dark:border-neutral-800/60 flex items-center justify-between px-5">
-                    <div className="w-9 h-9 rounded-xl bg-white dark:bg-neutral-800/60 border border-neutral-200 dark:border-neutral-700/60 flex items-center justify-center text-neutral-500 dark:text-neutral-400">
-                      <FolderGit2 className="w-4 h-4" />
-                    </div>
-                    <div className="flex items-center gap-2">
-                      {(project.stars ?? 0) > 0 && (
-                        <span className="inline-flex items-center gap-1 text-xs font-mono px-2 py-0.5 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-600 dark:text-amber-400">
-                          <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
-                          <span>{project.stars}</span>
+                  <div className="relative w-full h-44 overflow-hidden border-b border-neutral-200 dark:border-neutral-800/60">
+                    <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 via-indigo-500/10 to-purple-500/20 dark:from-blue-600/25 dark:via-indigo-600/15 dark:to-purple-600/25" />
+                    <div className="page-grid absolute inset-0 opacity-50" />
+                    <div className="relative h-full flex flex-col justify-between p-5">
+                      <div className="w-11 h-11 rounded-2xl bg-white/80 dark:bg-neutral-900/80 border border-white/60 dark:border-neutral-700/60 flex items-center justify-center text-blue-600 dark:text-blue-300 shadow-sm">
+                        <FolderGit2 className="w-5 h-5" />
+                      </div>
+                      <div className="flex items-center gap-2">
+                        {(project.stars ?? 0) > 0 && (
+                          <span className="inline-flex items-center gap-1 text-xs font-mono px-2 py-0.5 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-600 dark:text-amber-400">
+                            <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
+                            <span>{project.stars}</span>
+                          </span>
+                        )}
+                        <span className="text-[11px] font-mono text-neutral-600 dark:text-neutral-400">
+                          {new Date(project.createdAt).toLocaleDateString('pt-BR')}
                         </span>
-                      )}
-                      <span className="text-[11px] font-mono text-neutral-500">
-                        {new Date(project.createdAt).toLocaleDateString('pt-BR')}
-                      </span>
+                      </div>
                     </div>
                   </div>
                 )}
@@ -261,13 +260,9 @@ export function ProjectsExplorer({
                   {/* Tags */}
                   <div className="flex flex-wrap gap-1 pt-1">
                     {project.tags.slice(0, 4).map((tag) => (
-                      <span
-                        key={tag}
-                        onClick={() => handleTagChange(tag)}
-                        className="text-[10px] px-2 py-0.5 rounded-md bg-neutral-100 dark:bg-neutral-800/90 hover:bg-blue-50 dark:hover:bg-blue-900/30 text-neutral-700 dark:text-neutral-300 border border-neutral-200 dark:border-neutral-700/70 font-mono tracking-tight cursor-pointer transition-colors"
-                      >
+                      <Tag key={tag} onClick={() => handleTagChange(tag)}>
                         {tag}
-                      </span>
+                      </Tag>
                     ))}
                     {project.tags.length > 4 && (
                       <span className="text-[10px] px-1.5 py-0.5 text-neutral-400 font-mono self-center">
