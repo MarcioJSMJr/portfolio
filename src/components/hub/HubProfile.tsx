@@ -44,8 +44,8 @@ export function HubProfile({
               className="w-full h-full rounded-full object-cover bg-neutral-100 dark:bg-neutral-900"
             />
           ) : (
-            <div className="w-full h-full rounded-full bg-neutral-100 dark:bg-neutral-950 flex items-center justify-center">
-              <span className="text-2xl sm:text-3xl font-extrabold tracking-tight bg-gradient-to-tr from-blue-600 via-indigo-500 to-purple-500 bg-clip-text text-transparent">
+            <div className="w-full h-full rounded-full bg-white dark:bg-neutral-900 flex items-center justify-center">
+              <span className="text-2xl sm:text-3xl font-extrabold tracking-tight bg-gradient-to-tr from-blue-600 via-indigo-500 to-purple-500 dark:from-blue-300 dark:via-indigo-200 dark:to-purple-300 bg-clip-text text-transparent">
                 {getMonogram(name)}
               </span>
             </div>
