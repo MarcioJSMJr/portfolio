@@ -31,7 +31,8 @@
 - A home (`/`) é um **Hub estilo Linktree**: card-painel glass (`max-w-xl` centralizado), kicker de disponibilidade, monograma quando não há avatar, stats (projetos/posts), `HubLinkCard` unificado e redes sociais. **O Hub permanece estreito de propósito** — não usa o Container full-bleed.
 - Fundo compartilhado via `PageShell` (grade + glow azul/roxo); tema/compartilhar ficam **dentro** do painel do Hub.
 - Demais páginas públicas (`/projects`, `/journal`, Navbar, Footer) usam `Container` com `size="full"` (`max-w-none` + padding lateral) para ocupar a largura da tela. Artigo individual (`/journal/[slug]`) fica em `size="lg"` para leitura confortável.
-- Navbar sticky com marca terminal + nav em segmento (estado ativo via `usePathname`).
+- Navbar sticky com logo **Marcio Tech** (`/brand/marcio-tech-logo.png`), menu segmentado **centralizado** (via `absolute left-1/2 -translate-x-1/2`) e estado ativo via `usePathname`. Favicon em `/favicon.ico` + `/icon.png`.
+- Em Projetos, busca compacta (`max-w-md`) e filtros de stack ficam **na mesma linha**; no Diário a busca compacta fica ao lado do contador.
 - `/links` apenas redireciona para `/` (clone removido; `ShareButton` vive em `src/components/`).
 
 ## 🎯 Progresso & Próximos Passos
@@ -50,6 +51,7 @@
 - [x] Hub mais presente (card-painel, monograma, stats, fundo grade+glow) e primitivos UI compartilhados (`src/components/ui/` + `src/components/hub/`).
 - [x] Limpeza de código morto: seções de landing órfãs, clone `/links`, forms admin substituídos por modais; degradê graceful sem banco.
 - [x] Layout full-bleed nas vitrines/Navbar/Footer (Hub continua centralizado); Navbar redesenhada (marca terminal + nav segmentada).
+- [x] Branding Marcio Tech na Navbar + favicon; menu centralizado; busca/filtros em linha nas vitrines.
 - [ ] Reorganizar pastas do Admin por domínio (profile / projects / posts / analytics) — próximo passo.
 - [ ] Conectar o projeto na Vercel e configurar as variáveis de ambiente de produção.
 
