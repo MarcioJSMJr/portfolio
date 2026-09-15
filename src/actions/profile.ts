@@ -85,7 +85,6 @@ export async function upsertProfile(
     revalidatePath('/admin');
     revalidatePath('/projects');
     revalidatePath('/journal');
-    revalidatePath('/links');
 
     return {
       success: true,
