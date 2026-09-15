@@ -20,20 +20,22 @@ export function PageHeader({
   tone = 'blue',
 }: PageHeaderProps) {
   return (
-    <header className="space-y-4 text-center sm:text-left border-b border-border pb-8">
+    <header className="space-y-4 text-left border-b border-border pb-8">
       <div
         className={`inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-medium border ${tones[tone]}`}
       >
         {badge}
       </div>
-      <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-foreground">
-        {title}
-      </h1>
-      {description ? (
-        <p className="text-neutral-600 dark:text-neutral-400 text-sm sm:text-base max-w-2xl leading-relaxed font-light">
-          {description}
-        </p>
-      ) : null}
+      <div className="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between lg:gap-10">
+        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-foreground max-w-3xl">
+          {title}
+        </h1>
+        {description ? (
+          <p className="text-neutral-600 dark:text-neutral-400 text-sm sm:text-base max-w-xl leading-relaxed font-light lg:text-right lg:pb-1">
+            {description}
+          </p>
+        ) : null}
+      </div>
     </header>
   );
 }

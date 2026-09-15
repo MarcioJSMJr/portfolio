@@ -24,7 +24,7 @@ export default async function JournalPage() {
     <PageShell accent="purple">
       <Navbar />
 
-      <Container as="main" size="xl" className="flex-1 py-10 md:py-14 space-y-10">
+      <Container as="main" size="full" className="flex-1 py-8 md:py-12 space-y-10">
         <PageHeader
           tone="purple"
           badge={
@@ -37,7 +37,7 @@ export default async function JournalPage() {
           description="Um espaço pessoal para documentar aprendizados diários, soluções de bugs, reflexões sobre arquitetura e novidades do ecossistema Full Stack com busca instantânea."
         />
 
-        <JournalExplorer posts={posts} itemsPerPage={6} />
+        <JournalExplorer posts={posts} itemsPerPage={8} />
       </Container>
 
       <Footer />

@@ -100,10 +100,9 @@ export function ProjectsExplorer({
 
   return (
     <div className="space-y-8">
-      {/* Controles: Busca & Filtro de Tags */}
-      <div className="space-y-5">
-        {/* Barra de Pesquisa */}
-        <div className="relative max-w-2xl">
+      {/* Controles: busca + filtros na mesma linha */}
+      <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:gap-4">
+        <div className="relative w-full max-w-md shrink-0">
           <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-neutral-400">
             <Search className="w-4 h-4" />
           </div>
@@ -111,8 +110,8 @@ export function ProjectsExplorer({
             type="text"
             value={searchTerm}
             onChange={(e) => handleSearchChange(e.target.value)}
-            placeholder="Buscar por título, tecnologia ou descrição..."
-            className="w-full pl-10 pr-10 py-3 rounded-2xl bg-white dark:bg-neutral-900/70 border border-neutral-200 dark:border-neutral-800 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all shadow-sm"
+            placeholder="Buscar projetos..."
+            className="w-full pl-10 pr-10 py-2.5 rounded-2xl bg-white dark:bg-neutral-900/70 border border-neutral-200 dark:border-neutral-800 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all shadow-sm"
           />
           {searchTerm && (
             <button
@@ -124,9 +123,8 @@ export function ProjectsExplorer({
           )}
         </div>
 
-        {/* Filtros de Tecnologias / Tags */}
-        <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
-          <div className="flex items-center gap-1.5 shrink-0 text-xs text-neutral-500 mr-1 font-mono">
+        <div className="flex items-center gap-2 min-w-0 flex-1 overflow-x-auto pb-1 lg:pb-0 scrollbar-none">
+          <div className="flex items-center gap-1.5 shrink-0 text-xs text-neutral-500 font-mono">
             <TagIcon className="w-3.5 h-3.5" />
             <span>Stack:</span>
           </div>
@@ -201,7 +199,7 @@ export function ProjectsExplorer({
           }
         />
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-5 md:gap-6">
           {currentProjects.map((project) => (
             <article
               key={project.id}
