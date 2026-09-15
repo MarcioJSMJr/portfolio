@@ -59,46 +59,47 @@ export function JournalExplorer({
 
   return (
     <div className="space-y-8">
-      {/* Barra de Pesquisa */}
-      <div className="relative max-w-2xl">
-        <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-neutral-400">
-          <Search className="w-4 h-4" />
+      {/* Busca compacta + contador na mesma linha */}
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
+        <div className="relative w-full max-w-md">
+          <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-neutral-400">
+            <Search className="w-4 h-4" />
+          </div>
+          <input
+            type="text"
+            value={searchTerm}
+            onChange={(e) => handleSearchChange(e.target.value)}
+            placeholder="Buscar no diário..."
+            className="w-full pl-10 pr-10 py-2.5 rounded-2xl bg-white dark:bg-neutral-900/70 border border-neutral-200 dark:border-neutral-800 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 text-sm focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 transition-all shadow-sm"
+          />
+          {searchTerm && (
+            <button
+              onClick={clearSearch}
+              className="absolute inset-y-0 right-0 pr-3.5 flex items-center text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-200 cursor-pointer"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          )}
         </div>
-        <input
-          type="text"
-          value={searchTerm}
-          onChange={(e) => handleSearchChange(e.target.value)}
-          placeholder="Buscar no diário por título, conceito ou palavra-chave..."
-          className="w-full pl-10 pr-10 py-3 rounded-2xl bg-white dark:bg-neutral-900/70 border border-neutral-200 dark:border-neutral-800 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 text-sm focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 transition-all shadow-sm"
-        />
-        {searchTerm && (
-          <button
-            onClick={clearSearch}
-            className="absolute inset-y-0 right-0 pr-3.5 flex items-center text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-200 cursor-pointer"
-          >
-            <X className="w-4 h-4" />
-          </button>
-        )}
-      </div>
 
-      {/* Contador de Resultados */}
-      <div className="flex items-center justify-between text-xs text-neutral-500 font-mono">
-        <span>
-          Mostrando{' '}
-          <strong className="text-neutral-900 dark:text-white font-semibold">
-            {filteredPosts.length}
-          </strong>{' '}
-          {filteredPosts.length === 1 ? 'artigo encontrado' : 'artigos encontrados'}
-        </span>
-        {searchTerm && (
-          <button
-            onClick={clearSearch}
-            className="text-purple-600 dark:text-purple-400 hover:underline cursor-pointer flex items-center gap-1"
-          >
-            <X className="w-3 h-3" />
-            <span>Limpar busca</span>
-          </button>
-        )}
+        <div className="flex items-center justify-between sm:justify-end gap-3 text-xs text-neutral-500 font-mono shrink-0">
+          <span>
+            Mostrando{' '}
+            <strong className="text-neutral-900 dark:text-white font-semibold">
+              {filteredPosts.length}
+            </strong>{' '}
+            {filteredPosts.length === 1 ? 'artigo' : 'artigos'}
+          </span>
+          {searchTerm && (
+            <button
+              onClick={clearSearch}
+              className="text-purple-600 dark:text-purple-400 hover:underline cursor-pointer flex items-center gap-1"
+            >
+              <X className="w-3 h-3" />
+              <span>Limpar</span>
+            </button>
+          )}
+        </div>
       </div>
 
       {/* Lista de Artigos */}
