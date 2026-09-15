@@ -29,8 +29,8 @@ export default async function AdminPage() {
   ]);
 
   return (
-    <main className="min-h-screen bg-[#fafafa] dark:bg-neutral-950 text-neutral-900 dark:text-neutral-100 px-4 py-8 sm:px-8 md:px-16 lg:px-24 selection:bg-blue-500/30 transition-colors duration-200">
-      <div className="max-w-4xl mx-auto space-y-10">
+    <main className="min-h-screen bg-[#fafafa] dark:bg-neutral-950 text-neutral-900 dark:text-neutral-100 px-5 py-8 sm:px-8 lg:px-10 xl:px-12 2xl:px-16 selection:bg-blue-500/30 transition-colors duration-200">
+      <div className="mx-auto w-full max-w-none space-y-10">
         {/* Barra superior de navegação */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-neutral-200 dark:border-neutral-800/80">
           <Link

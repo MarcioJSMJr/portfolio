@@ -103,7 +103,7 @@ export function ProjectsExplorer({
       {/* Controles: Busca & Filtro de Tags */}
       <div className="space-y-5">
         {/* Barra de Pesquisa */}
-        <div className="relative max-w-2xl">
+        <div className="relative w-full">
           <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-neutral-400">
             <Search className="w-4 h-4" />
           </div>
@@ -201,7 +201,7 @@ export function ProjectsExplorer({
           }
         />
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-5 md:gap-6">
           {currentProjects.map((project) => (
             <article
               key={project.id}

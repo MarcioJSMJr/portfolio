@@ -1,51 +1,110 @@
+'use client';
+
 import Link from 'next/link';
-import { Sparkles, FolderGit2, BookOpen, Home } from 'lucide-react';
+import { usePathname } from 'next/navigation';
+import { FolderGit2, BookOpen, Home, Terminal } from 'lucide-react';
 import { ThemeToggle } from './ThemeToggle';
 import { Container } from '@/components/ui';
 
+const links = [
+  { href: '/', label: 'Hub', icon: Home, match: (path: string) => path === '/' },
+  {
+    href: '/projects',
+    label: 'Projetos',
+    icon: FolderGit2,
+    match: (path: string) => path.startsWith('/projects'),
+  },
+  {
+    href: '/journal',
+    label: 'Diário',
+    icon: BookOpen,
+    match: (path: string) => path.startsWith('/journal'),
+  },
+] as const;
+
 export function Navbar() {
+  const pathname = usePathname();
+
   return (
-    <header className="sticky top-0 z-50 w-full backdrop-blur-md bg-white/80 dark:bg-neutral-950/80 border-b border-border transition-colors duration-200">
-      <Container className="h-16 flex items-center justify-between">
+    <header className="sticky top-0 z-50 w-full">
+      <div className="absolute inset-0 border-b border-border/70 bg-background/75 backdrop-blur-xl supports-[backdrop-filter]:bg-background/60" />
+      <Container className="relative h-[4.25rem] flex items-center justify-between gap-4">
         <Link
           href="/"
-          className="flex items-center gap-2 font-bold text-base sm:text-lg tracking-tight text-foreground hover:opacity-90 transition-opacity"
+          className="group flex items-center gap-3 shrink-0 min-w-0"
         >
-          <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-blue-600 to-purple-600 flex items-center justify-center text-white shadow-md shadow-blue-500/20">
-            <Sparkles className="w-4 h-4" />
-          </div>
-          <span className="bg-gradient-to-r from-neutral-900 via-neutral-700 to-neutral-500 dark:from-white dark:via-neutral-200 dark:to-neutral-400 bg-clip-text text-transparent">
-            Portfólio<span className="text-blue-500">.dev</span>
+          <span className="relative flex h-10 w-10 items-center justify-center rounded-2xl border border-cyan-500/25 bg-neutral-950 text-cyan-300 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] dark:bg-neutral-900">
+            <Terminal className="h-4 w-4 transition-transform duration-300 group-hover:-rotate-6" />
+            <span className="absolute -bottom-0.5 -right-0.5 h-2 w-2 rounded-sm bg-emerald-400" />
+          </span>
+          <span className="flex flex-col leading-none">
+            <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-neutral-500">
+              full stack
+            </span>
+            <span className="text-sm sm:text-base font-semibold tracking-tight text-foreground">
+              Portfólio
+              <span className="text-cyan-600 dark:text-cyan-400">.dev</span>
+            </span>
           </span>
         </Link>
 
-        <div className="flex items-center gap-4 sm:gap-6">
-          <nav className="flex items-center gap-3 sm:gap-6 text-xs sm:text-sm font-medium text-neutral-600 dark:text-neutral-400">
-            <Link
-              href="/"
-              className="hover:text-foreground transition-colors flex items-center gap-1.5"
-            >
-              <Home className="w-3.5 h-3.5" />
-              <span className="hidden sm:inline">Hub</span>
-            </Link>
-            <Link
-              href="/projects"
-              className="hover:text-foreground transition-colors flex items-center gap-1.5"
-            >
-              <FolderGit2 className="w-3.5 h-3.5 text-blue-500" />
-              <span>Projetos</span>
-            </Link>
-            <Link
-              href="/journal"
-              className="hover:text-foreground transition-colors flex items-center gap-1.5"
-            >
-              <BookOpen className="w-3.5 h-3.5 text-purple-500" />
-              <span>Diário</span>
-            </Link>
+        <nav
+          aria-label="Principal"
+          className="hidden sm:flex items-center rounded-2xl border border-border/80 bg-neutral-100/80 p-1 dark:bg-white/[0.04]"
+        >
+          {links.map(({ href, label, icon: Icon, match }) => {
+            const active = match(pathname);
+            return (
+              <Link
+                key={href}
+                href={href}
+                aria-current={active ? 'page' : undefined}
+                className={`relative inline-flex items-center gap-2 rounded-xl px-3.5 py-2 text-sm font-medium transition-all ${
+                  active
+                    ? 'bg-white text-foreground shadow-sm dark:bg-neutral-800 dark:text-white'
+                    : 'text-neutral-500 hover:text-foreground dark:text-neutral-400'
+                }`}
+              >
+                <Icon
+                  className={`h-3.5 w-3.5 ${
+                    active
+                      ? href === '/journal'
+                        ? 'text-violet-500'
+                        : 'text-cyan-600 dark:text-cyan-400'
+                      : ''
+                  }`}
+                />
+                <span>{label}</span>
+              </Link>
+            );
+          })}
+        </nav>
+
+        <div className="flex items-center gap-2 sm:gap-3">
+          <nav
+            aria-label="Mobile"
+            className="flex sm:hidden items-center gap-1 rounded-2xl border border-border/80 bg-neutral-100/80 p-1 dark:bg-white/[0.04]"
+          >
+            {links.map(({ href, label, icon: Icon, match }) => {
+              const active = match(pathname);
+              return (
+                <Link
+                  key={href}
+                  href={href}
+                  title={label}
+                  aria-label={label}
+                  aria-current={active ? 'page' : undefined}
+                  className={`inline-flex h-9 w-9 items-center justify-center rounded-xl transition-all ${
+                    active
+                      ? 'bg-white text-foreground shadow-sm dark:bg-neutral-800'
+                      : 'text-neutral-500 hover:text-foreground'
+                  }`}
+                >
+                  <Icon className="h-4 w-4" />
+                </Link>
+              );
+            })}
           </nav>
-
-          <div className="h-4 w-px bg-border" />
-
           <ThemeToggle />
         </div>
       </Container>

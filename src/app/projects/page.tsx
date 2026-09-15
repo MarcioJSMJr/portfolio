@@ -25,7 +25,7 @@ export default async function ProjectsPage() {
     <PageShell>
       <Navbar />
 
-      <Container as="main" className="flex-1 py-10 md:py-14 space-y-8">
+      <Container as="main" size="full" className="flex-1 py-8 md:py-12 space-y-8">
         <div>
           <Link
             href="/"
@@ -48,7 +48,7 @@ export default async function ProjectsPage() {
           description="Explore meus principais projetos, repositórios públicos e sistemas em produção com filtros por stack e busca instantânea."
         />
 
-        <ProjectsExplorer projects={projects} itemsPerPage={6} />
+        <ProjectsExplorer projects={projects} itemsPerPage={8} />
       </Container>
 
       <Footer />
