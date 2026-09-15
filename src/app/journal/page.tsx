@@ -13,10 +13,12 @@ export const metadata = {
 };
 
 export default async function JournalPage() {
-  const posts = await prisma.post.findMany({
-    where: { published: true },
-    orderBy: { createdAt: 'desc' },
-  });
+  const posts = await prisma.post
+    .findMany({
+      where: { published: true },
+      orderBy: { createdAt: 'desc' },
+    })
+    .catch(() => []);
 
   return (
     <PageShell accent="purple">

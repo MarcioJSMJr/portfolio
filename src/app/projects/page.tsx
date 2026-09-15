@@ -14,10 +14,12 @@ export const metadata = {
 };
 
 export default async function ProjectsPage() {
-  const projects = await prisma.project.findMany({
-    where: { published: true },
-    orderBy: [{ stars: 'desc' }, { createdAt: 'desc' }],
-  });
+  const projects = await prisma.project
+    .findMany({
+      where: { published: true },
+      orderBy: [{ stars: 'desc' }, { createdAt: 'desc' }],
+    })
+    .catch(() => []);
 
   return (
     <PageShell>

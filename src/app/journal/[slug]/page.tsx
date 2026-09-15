@@ -17,7 +17,7 @@ export async function generateMetadata({ params }: PostPageProps): Promise<Metad
   const { slug } = await params;
   const post = await prisma.post.findUnique({
     where: { slug },
-  });
+  }).catch(() => null);
 
   if (!post) {
     return {
@@ -35,7 +35,7 @@ export default async function PostPage({ params }: PostPageProps) {
   const { slug } = await params;
   const post = await prisma.post.findUnique({
     where: { slug },
-  });
+  }).catch(() => null);
 
   if (!post || !post.published) {
     notFound();
