@@ -29,7 +29,7 @@ export function Navbar() {
   return (
     <header className="sticky top-0 z-50 w-full">
       <div className="absolute inset-0 border-b border-border/70 bg-background/75 backdrop-blur-xl supports-[backdrop-filter]:bg-background/60" />
-      <Container className="relative h-[4.25rem] flex items-center">
+      <Container className="relative h-[4.75rem] flex items-center">
         {/* Logo — esquerda */}
         <Link
           href="/"
@@ -39,10 +39,10 @@ export function Navbar() {
           <Image
             src="/brand/marcio-tech-logo.png"
             alt="Marcio Tech"
-            width={220}
-            height={53}
+            width={280}
+            height={89}
             priority
-            className="h-9 sm:h-10 w-auto object-contain"
+            className="h-11 sm:h-12 md:h-14 w-auto object-contain"
           />
         </Link>
 
