@@ -5,6 +5,7 @@ import { SyncGithubButton } from './SyncGithubButton';
 import { ToggleProjectPublishButton } from './ToggleProjectPublishButton';
 import { ProjectModal } from './ProjectModal';
 import { DeleteProjectConfirmModal } from './DeleteProjectConfirmModal';
+import { AdminPagination } from '../shell/AdminPagination';
 import {
   PlusCircle,
   Search,
@@ -311,42 +312,12 @@ export function ProjectsManager({
         </div>
       )}
 
-      {/* Paginação */}
-      {totalPages > 1 && (
-        <div className="pt-4 flex items-center justify-center gap-2">
-          <button
-            onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
-            disabled={currentPage === 1}
-            className="px-3.5 py-1.5 rounded-xl text-xs font-medium bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 text-neutral-700 dark:text-neutral-300 hover:bg-neutral-50 dark:hover:bg-neutral-800 disabled:opacity-40 disabled:cursor-not-allowed transition-all cursor-pointer shadow-sm"
-          >
-            Anterior
-          </button>
-
-          <div className="flex items-center gap-1">
-            {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-              <button
-                key={page}
-                onClick={() => setCurrentPage(page)}
-                className={`w-7 h-7 rounded-lg text-xs font-mono font-medium transition-all cursor-pointer ${
-                  currentPage === page
-                    ? 'bg-indigo-600 text-white shadow-sm'
-                    : 'bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white'
-                }`}
-              >
-                {page}
-              </button>
-            ))}
-          </div>
-
-          <button
-            onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
-            disabled={currentPage === totalPages}
-            className="px-3.5 py-1.5 rounded-xl text-xs font-medium bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 text-neutral-700 dark:text-neutral-300 hover:bg-neutral-50 dark:hover:bg-neutral-800 disabled:opacity-40 disabled:cursor-not-allowed transition-all cursor-pointer shadow-sm"
-          >
-            Próximo
-          </button>
-        </div>
-      )}
+      <AdminPagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={setCurrentPage}
+        activeClassName="bg-indigo-600 text-white shadow-sm"
+      />
 
       {/* Modais de Criação e Edição */}
       <ProjectModal

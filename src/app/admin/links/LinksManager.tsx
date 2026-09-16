@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { LinkModal } from './LinkModal';
 import { DeleteLinkConfirmModal } from './DeleteLinkConfirmModal';
+import { AdminPagination } from '../shell/AdminPagination';
 import {
   PlusCircle,
   Search,
@@ -35,6 +36,8 @@ export function LinksManager({
   onCreateOpened,
 }: LinksManagerProps) {
   const [searchTerm, setSearchTerm] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 6;
   const [isNewModalOpen, setIsNewModalOpen] = useState(false);
   const [linkToEdit, setLinkToEdit] = useState<LinkItem | null>(null);
   const [linkToDelete, setLinkToDelete] = useState<{ id: string; title: string } | null>(null);
@@ -54,6 +57,17 @@ export function LinksManager({
         link.url.toLowerCase().includes(query)
     );
   }, [links, searchTerm]);
+
+  const totalPages = Math.max(1, Math.ceil(filteredLinks.length / itemsPerPage));
+  const currentLinks = useMemo(() => {
+    const start = (currentPage - 1) * itemsPerPage;
+    return filteredLinks.slice(start, start + itemsPerPage);
+  }, [filteredLinks, currentPage, itemsPerPage]);
+
+  const handleSearchChange = (val: string) => {
+    setSearchTerm(val);
+    setCurrentPage(1);
+  };
 
   return (
     <div className="space-y-6">
@@ -89,13 +103,13 @@ export function LinksManager({
         <input
           type="text"
           value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
+          onChange={(e) => handleSearchChange(e.target.value)}
           placeholder="Buscar por título ou URL..."
           className="w-full pl-10 pr-10 py-2.5 rounded-xl bg-white dark:bg-neutral-900/70 border border-neutral-200 dark:border-neutral-800 text-neutral-900 dark:text-white placeholder-neutral-400 text-xs focus:outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-500/20 shadow-sm"
         />
         {searchTerm && (
           <button
-            onClick={() => setSearchTerm('')}
+            onClick={() => handleSearchChange('')}
             className="absolute inset-y-0 right-0 pr-3 flex items-center text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-200 cursor-pointer"
           >
             <X className="w-3.5 h-3.5" />
@@ -115,7 +129,7 @@ export function LinksManager({
         </div>
       ) : (
         <div className="grid grid-cols-1 gap-3">
-          {filteredLinks.map((link) => (
+          {currentLinks.map((link) => (
             <div
               key={link.id}
               className="p-4 rounded-2xl bg-white dark:bg-neutral-900/60 border border-neutral-200 dark:border-neutral-800 hover:border-neutral-300 dark:hover:border-neutral-700 flex items-center justify-between gap-4 transition-all shadow-sm"
@@ -173,6 +187,13 @@ export function LinksManager({
           ))}
         </div>
       )}
+
+      <AdminPagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={setCurrentPage}
+        activeClassName="bg-sky-600 text-white shadow-sm"
+      />
 
       <LinkModal
         isOpen={isNewModalOpen}

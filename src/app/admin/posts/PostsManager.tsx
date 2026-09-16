@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { PostModal } from './PostModal';
 import { DeletePostConfirmModal } from './DeletePostConfirmModal';
 import { TogglePostButton } from './TogglePostButton';
+import { AdminPagination } from '../shell/AdminPagination';
 import {
   PlusCircle,
   Search,
@@ -37,6 +38,8 @@ export function PostsManager({
 }: PostsManagerProps) {
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState<'all' | 'published' | 'draft'>('all');
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 6;
   const [isNewModalOpen, setIsNewModalOpen] = useState(false);
   const [postToEdit, setPostToEdit] = useState<PostItem | null>(null);
   const [postToDelete, setPostToDelete] = useState<{ id: string; title: string } | null>(null);
@@ -62,6 +65,22 @@ export function PostsManager({
       );
     });
   }, [posts, statusFilter, searchTerm]);
+
+  const totalPages = Math.max(1, Math.ceil(filteredPosts.length / itemsPerPage));
+  const currentPosts = useMemo(() => {
+    const start = (currentPage - 1) * itemsPerPage;
+    return filteredPosts.slice(start, start + itemsPerPage);
+  }, [filteredPosts, currentPage, itemsPerPage]);
+
+  const handleSearchChange = (val: string) => {
+    setSearchTerm(val);
+    setCurrentPage(1);
+  };
+
+  const handleStatusFilter = (filter: typeof statusFilter) => {
+    setStatusFilter(filter);
+    setCurrentPage(1);
+  };
 
   return (
     <div className="space-y-6">
@@ -98,13 +117,13 @@ export function PostsManager({
           <input
             type="text"
             value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+            onChange={(e) => handleSearchChange(e.target.value)}
             placeholder="Buscar por título, slug ou conteúdo..."
             className="w-full pl-10 pr-10 py-2.5 rounded-xl bg-white dark:bg-neutral-900/70 border border-neutral-200 dark:border-neutral-800 text-neutral-900 dark:text-white placeholder-neutral-400 text-xs focus:outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-500/20 shadow-sm"
           />
           {searchTerm && (
             <button
-              onClick={() => setSearchTerm('')}
+              onClick={() => handleSearchChange('')}
               className="absolute inset-y-0 right-0 pr-3 flex items-center text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-200 cursor-pointer"
             >
               <X className="w-3.5 h-3.5" />
@@ -122,7 +141,7 @@ export function PostsManager({
             return (
               <button
                 key={filter.key}
-                onClick={() => setStatusFilter(filter.key as typeof statusFilter)}
+                onClick={() => handleStatusFilter(filter.key as typeof statusFilter)}
                 className={`px-3 py-1.5 rounded-xl text-xs font-medium transition-all cursor-pointer ${
                   isSelected
                     ? 'bg-violet-600 text-white shadow-sm'
@@ -149,7 +168,7 @@ export function PostsManager({
         </div>
       ) : (
         <div className="grid grid-cols-1 gap-3.5">
-          {filteredPosts.map((post) => (
+          {currentPosts.map((post) => (
             <div
               key={post.id}
               className="p-4 sm:p-5 rounded-2xl bg-white dark:bg-neutral-900/60 border border-neutral-200 dark:border-neutral-800 hover:border-neutral-300 dark:hover:border-neutral-700 transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-sm"
@@ -208,6 +227,13 @@ export function PostsManager({
           ))}
         </div>
       )}
+
+      <AdminPagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={setCurrentPage}
+        activeClassName="bg-violet-600 text-white shadow-sm"
+      />
 
       <PostModal
         isOpen={isNewModalOpen}

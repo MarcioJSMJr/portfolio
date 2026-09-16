@@ -104,9 +104,9 @@ export function AdminAnalyticsDashboard({
       status: string;
     }> = [];
 
-    projects.slice(0, 4).forEach((p) => {
+    projects.forEach((p) => {
       items.push({
-        id: p.id,
+        id: `project-${p.id}`,
         title: p.title,
         type: 'project',
         date: new Date(p.createdAt),
@@ -114,9 +114,9 @@ export function AdminAnalyticsDashboard({
       });
     });
 
-    posts.slice(0, 3).forEach((p) => {
+    posts.forEach((p) => {
       items.push({
-        id: p.id,
+        id: `post-${p.id}`,
         title: p.title,
         type: 'post',
         date: new Date(p.createdAt),
@@ -124,7 +124,7 @@ export function AdminAnalyticsDashboard({
       });
     });
 
-    return items.sort((a, b) => b.date.getTime() - a.date.getTime()).slice(0, 5);
+    return items.sort((a, b) => b.date.getTime() - a.date.getTime()).slice(0, 30);
   }, [projects, posts]);
 
   return (
@@ -299,7 +299,7 @@ export function AdminAnalyticsDashboard({
                 Nenhuma atividade recente registrada.
               </div>
             ) : (
-              <div className="space-y-3">
+              <div className="max-h-56 overflow-y-auto overscroll-contain pr-1 space-y-3 scrollbar-thin">
                 {recentActivities.map((act) => (
                   <div
                     key={act.id}
