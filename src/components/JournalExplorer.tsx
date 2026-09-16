@@ -132,7 +132,7 @@ export function JournalExplorer({
               <Link
                 key={post.id}
                 href={`/journal/${post.slug}`}
-                className="p-6 sm:p-7 rounded-2xl bg-white/80 dark:bg-neutral-900/50 border border-border hover:border-purple-400 dark:hover:border-purple-500/40 hover:bg-neutral-50/80 dark:hover:bg-neutral-900/80 transition-all group block shadow-sm hover:shadow-xl hover:shadow-purple-500/10 hover:scale-[1.01] space-y-4 backdrop-blur-sm"
+                className="p-4 sm:p-6 md:p-7 rounded-2xl bg-white/80 dark:bg-neutral-900/50 border border-border hover:border-purple-400 dark:hover:border-purple-500/40 hover:bg-neutral-50/80 dark:hover:bg-neutral-900/80 transition-all group block shadow-sm hover:shadow-xl hover:shadow-purple-500/10 hover:scale-[1.01] space-y-4 backdrop-blur-sm"
               >
                 <div className="flex flex-wrap items-center gap-3 text-xs text-neutral-500 font-mono">
                   <span className="flex items-center gap-1.5 text-purple-600 dark:text-purple-400">
@@ -171,7 +171,7 @@ export function JournalExplorer({
 
       {/* Paginação */}
       {totalPages > 1 && (
-        <div className="pt-6 flex items-center justify-center gap-2">
+        <div className="pt-6 flex flex-wrap items-center justify-center gap-2">
           <button
             onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
             disabled={currentPage === 1}
@@ -180,7 +180,7 @@ export function JournalExplorer({
             Anterior
           </button>
 
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-1 flex-wrap justify-center max-w-full">
             {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
               <button
                 key={page}

@@ -31,6 +31,28 @@ body {
   color: var(--foreground);
   font-family: var(--font-geist-sans), system-ui, -apple-system, sans-serif;
   transition: background-color 0.2s ease, color 0.2s ease;
+  overflow-x: clip;
+}
+
+html {
+  overflow-x: clip;
+}
+
+/* Evita scroll horizontal “fantasma” em carrosséis de chips */
+.scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+
+/* Toque: remove escala hover em dispositivos sem hover fino */
+@media (hover: none) {
+  .hover\:scale-\[1\.01\]:hover,
+  .hover\:scale-\[1\.02\]:hover {
+    transform: none;
+  }
 }
 
 .page-grid {

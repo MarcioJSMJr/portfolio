@@ -77,7 +77,7 @@ export default async function PostPage({ params }: PostPageProps) {
             </span>
           </div>
 
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-foreground tracking-tight leading-tight">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold text-foreground tracking-tight leading-tight text-balance">
             {post.title}
           </h1>
         </header>

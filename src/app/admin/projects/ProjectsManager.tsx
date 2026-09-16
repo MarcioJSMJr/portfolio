@@ -102,11 +102,11 @@ export function ProjectsManager({
   return (
     <div className="space-y-6">
       {/* Barra de Ações Superiores: Título, Novo Projeto e Sincronização */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-6 rounded-2xl bg-white dark:bg-neutral-900/70 border border-neutral-200 dark:border-neutral-800 shadow-sm">
-        <div className="space-y-1">
-          <div className="flex items-center gap-2.5">
-            <Layers className="w-5 h-5 text-indigo-500" />
-            <h2 className="text-xl font-bold text-neutral-900 dark:text-white tracking-tight">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 sm:p-6 rounded-2xl bg-white dark:bg-neutral-900/70 border border-neutral-200 dark:border-neutral-800 shadow-sm">
+        <div className="space-y-1 min-w-0">
+          <div className="flex flex-wrap items-center gap-2 sm:gap-2.5">
+            <Layers className="w-5 h-5 text-indigo-500 shrink-0" />
+            <h2 className="text-lg sm:text-xl font-bold text-neutral-900 dark:text-white tracking-tight">
               Gerenciar Projetos
             </h2>
             <span className="text-xs px-2.5 py-0.5 rounded-full bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-400 font-mono">
@@ -118,10 +118,10 @@ export function ProjectsManager({
           </p>
         </div>
 
-        <div className="flex flex-wrap items-center gap-3">
+        <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
           <button
             onClick={() => setIsNewModalOpen(true)}
-            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-medium text-xs sm:text-sm shadow-md shadow-indigo-500/20 transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
+            className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-medium text-xs sm:text-sm shadow-md shadow-indigo-500/20 transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer w-full sm:w-auto"
           >
             <PlusCircle className="w-4 h-4" />
             <span>+ Novo Projeto</span>

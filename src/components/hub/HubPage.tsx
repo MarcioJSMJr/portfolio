@@ -41,8 +41,8 @@ export function HubPage({
   return (
     <PageShell className="items-center">
       <div className="relative z-10 flex min-h-screen w-full flex-col items-center px-4 py-6 sm:px-6">
-        <div className="my-auto w-full max-w-xl py-4">
-          <div className="rounded-3xl border border-border/80 bg-white/70 dark:bg-neutral-900/45 p-6 sm:p-8 shadow-xl shadow-indigo-500/5 backdrop-blur-xl text-center">
+        <div className="my-auto w-full max-w-xl py-2 sm:py-4">
+          <div className="rounded-3xl border border-border/80 bg-white/70 dark:bg-neutral-900/45 p-4 sm:p-6 md:p-8 shadow-xl shadow-indigo-500/5 backdrop-blur-xl text-center">
             <div className="flex items-center justify-end gap-2 -mt-1 mb-4">
               <ThemeToggle />
               <ShareButton />

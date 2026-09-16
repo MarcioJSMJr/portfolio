@@ -27,11 +27,11 @@ export function PageHeader({
         {badge}
       </div>
       <div className="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between lg:gap-10">
-        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-foreground max-w-3xl">
+        <h1 className="text-2xl sm:text-3xl lg:text-5xl font-extrabold tracking-tight text-foreground max-w-3xl text-balance">
           {title}
         </h1>
         {description ? (
-          <p className="text-neutral-600 dark:text-neutral-400 text-sm sm:text-base max-w-xl leading-relaxed font-light lg:text-right lg:pb-1">
+          <p className="text-neutral-600 dark:text-neutral-400 text-sm sm:text-base max-w-xl leading-relaxed font-light lg:text-right lg:pb-1 text-pretty">
             {description}
           </p>
         ) : null}

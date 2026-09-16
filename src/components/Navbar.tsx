@@ -29,11 +29,11 @@ export function Navbar() {
   return (
     <header className="sticky top-0 z-50 w-full">
       <div className="absolute inset-0 border-b border-border/70 bg-background/75 backdrop-blur-xl supports-[backdrop-filter]:bg-background/60" />
-      <Container className="relative h-[4.75rem] flex items-center">
+      <Container className="relative h-16 sm:h-[4.75rem] flex items-center gap-3">
         {/* Logo — esquerda */}
         <Link
           href="/"
-          className="relative z-10 flex items-center shrink-0 min-w-0"
+          className="relative z-10 flex items-center shrink-0 min-w-0 max-w-[42%] sm:max-w-none"
           aria-label="Marcio Tech — início"
         >
           <Image
@@ -42,7 +42,7 @@ export function Navbar() {
             width={280}
             height={89}
             priority
-            className="h-11 sm:h-12 md:h-14 w-auto object-contain"
+            className="h-8 sm:h-11 md:h-14 w-auto max-w-full object-contain object-left"
           />
         </Link>
 

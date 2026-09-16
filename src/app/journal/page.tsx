@@ -37,7 +37,7 @@ export default async function JournalPage() {
           description="Um espaço pessoal para documentar aprendizados diários, soluções de bugs, reflexões sobre arquitetura e novidades do ecossistema Full Stack com busca instantânea."
         />
 
-        <JournalExplorer posts={posts} itemsPerPage={8} />
+        <JournalExplorer posts={posts} itemsPerPage={6} />
       </Container>
 
       <Footer />

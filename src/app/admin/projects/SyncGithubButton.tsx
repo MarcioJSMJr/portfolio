@@ -20,12 +20,12 @@ export function SyncGithubButton() {
   };
 
   return (
-    <div className="space-y-3">
-      <div className="flex items-center gap-3">
+    <div className="space-y-3 w-full sm:w-auto">
+      <div className="flex items-center gap-3 w-full">
         <button
           onClick={handleSync}
           disabled={isPending}
-          className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-neutral-900 dark:bg-neutral-800 hover:bg-neutral-800 dark:hover:bg-neutral-700 text-white font-medium text-xs sm:text-sm border border-neutral-700 dark:border-neutral-600 shadow-sm transition-all hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 cursor-pointer"
+          className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-neutral-900 dark:bg-neutral-800 hover:bg-neutral-800 dark:hover:bg-neutral-700 text-white font-medium text-xs sm:text-sm border border-neutral-700 dark:border-neutral-600 shadow-sm transition-all hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 cursor-pointer w-full sm:w-auto"
         >
           <RefreshCw className={`w-4 h-4 ${isPending ? 'animate-spin text-cyan-400' : 'text-neutral-300'}`} />
           <span>{isPending ? 'Sincronizando com GitHub...' : 'Sincronizar com GitHub'}</span>

@@ -75,9 +75,12 @@ export async function Footer() {
           </div>
         </div>
 
-        <div className="pt-8 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-neutral-500">
-          <p>
-            © {currentYear} Todos os direitos reservados. Construído com Next.js (App Router), Tailwind CSS e Prisma.
+        <div className="pt-8 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-neutral-500 text-center sm:text-left">
+          <p className="max-w-xl text-pretty">
+            <span className="sm:hidden">© {currentYear} Marcio Tech · Next.js & Prisma</span>
+            <span className="hidden sm:inline">
+              © {currentYear} Todos os direitos reservados. Construído com Next.js (App Router), Tailwind CSS e Prisma.
+            </span>
           </p>
           <a
             href="#top"

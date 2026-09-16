@@ -47,26 +47,26 @@ export function HubLinkCard({
   external = false,
   variant = 'default',
 }: HubLinkCardProps) {
-  const className = `w-full p-4 rounded-2xl border transition-all flex items-center justify-between gap-4 group cursor-pointer hover:scale-[1.01] ${variants[variant]}`;
+  const className = `w-full p-3.5 sm:p-4 rounded-2xl border transition-all flex items-center justify-between gap-3 sm:gap-4 group cursor-pointer hover:scale-[1.01] ${variants[variant]}`;
   const TrailingIcon = external ? ExternalLink : ArrowRight;
 
   const content = (
     <>
-      <div className="flex items-center gap-3.5 text-left min-w-0">
+      <div className="flex items-center gap-3 sm:gap-3.5 text-left min-w-0">
         <div
-          className={`p-2.5 rounded-xl border shrink-0 ${iconWrap[variant]}`}
+          className={`p-2 sm:p-2.5 rounded-xl border shrink-0 ${iconWrap[variant]}`}
         >
           {icon}
         </div>
         <div className="space-y-0.5 min-w-0">
           <span
-            className={`text-sm font-bold text-foreground flex items-center gap-2 min-w-0 ${titleHover[variant]} transition-colors`}
+            className={`text-sm font-bold text-foreground flex flex-wrap items-center gap-2 min-w-0 ${titleHover[variant]} transition-colors`}
           >
-            <span className="truncate">{title}</span>
+            <span className="truncate max-w-full">{title}</span>
             {badge}
           </span>
           {subtitle ? (
-            <span className="text-xs text-neutral-500 dark:text-neutral-400 block">
+            <span className="text-xs text-neutral-500 dark:text-neutral-400 block line-clamp-2">
               {subtitle}
             </span>
           ) : null}

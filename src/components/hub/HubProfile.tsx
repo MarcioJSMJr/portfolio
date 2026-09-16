@@ -65,7 +65,7 @@ export function HubProfile({
         </p>
       </div>
 
-      <div className="flex items-center gap-2 sm:gap-3 text-[11px] sm:text-xs font-mono text-neutral-500">
+      <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 text-[11px] sm:text-xs font-mono text-neutral-500">
         <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-700 dark:text-blue-300">
           <FolderGit2 className="w-3.5 h-3.5" />
           {projectsCount} {projectsCount === 1 ? 'projeto' : 'projetos'}

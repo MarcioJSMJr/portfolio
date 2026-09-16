@@ -19,7 +19,7 @@ export function PageShell({
   return (
     <div
       id="top"
-      className={`relative isolate min-h-screen flex flex-col bg-background text-foreground ${selection} selection:text-white transition-colors duration-200`}
+      className={`relative isolate min-h-screen flex flex-col bg-background text-foreground overflow-x-clip ${selection} selection:text-white transition-colors duration-200`}
     >
       <div
         className="pointer-events-none absolute inset-0 z-0 overflow-hidden"

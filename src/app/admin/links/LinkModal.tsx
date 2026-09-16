@@ -56,18 +56,18 @@ export function LinkModal({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
-      <div className="relative w-full max-w-lg bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-3xl shadow-2xl overflow-hidden my-8">
-        <div className="flex items-center justify-between p-6 border-b border-neutral-200 dark:border-neutral-800">
-          <div className="flex items-center gap-3">
-            <div className="p-2.5 rounded-xl bg-sky-500/10 text-sky-600 dark:text-sky-400">
+    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 md:p-6 overflow-y-auto bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
+      <div className="relative w-full sm:max-w-lg bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-t-3xl sm:rounded-3xl shadow-2xl overflow-hidden my-0 sm:my-8 max-h-[92dvh] flex flex-col">
+        <div className="flex items-center justify-between p-4 sm:p-6 border-b border-neutral-200 dark:border-neutral-800 shrink-0">
+          <div className="flex items-center gap-3 min-w-0">
+            <div className="p-2.5 rounded-xl bg-sky-500/10 text-sky-600 dark:text-sky-400 shrink-0">
               <Link2 className="w-5 h-5" />
             </div>
-            <div>
-              <h2 className="text-lg font-bold text-neutral-900 dark:text-white">
+            <div className="min-w-0">
+              <h2 className="text-base sm:text-lg font-bold text-neutral-900 dark:text-white truncate">
                 {isEditing ? 'Editar Link do Hub' : 'Novo Botão no Hub'}
               </h2>
-              <p className="text-xs text-neutral-500 font-light">
+              <p className="text-xs text-neutral-500 font-light line-clamp-2">
                 {isEditing
                   ? 'Atualize título, URL, ordem ou destaque.'
                   : 'Cadastre um botão para a página inicial.'}
@@ -76,13 +76,13 @@ export function LinkModal({
           </div>
           <button
             onClick={onClose}
-            className="p-2 rounded-xl text-neutral-400 hover:text-neutral-900 dark:hover:text-white hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors cursor-pointer"
+            className="p-2 rounded-xl text-neutral-400 hover:text-neutral-900 dark:hover:text-white hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors cursor-pointer shrink-0"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
-        <div className="px-6 pt-4">
+        <div className="px-4 sm:px-6 pt-4 shrink-0">
           {state.success && (
             <div className="p-3.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-600 dark:text-emerald-400 flex items-center gap-2.5 text-xs animate-in fade-in">
               <CheckCircle2 className="w-4 h-4 shrink-0" />
@@ -97,7 +97,7 @@ export function LinkModal({
           )}
         </div>
 
-        <form action={formAction} className="p-6 space-y-5">
+        <form action={formAction} className="p-4 sm:p-6 space-y-5 overflow-y-auto overscroll-contain">
           {isEditing && linkToEdit && (
             <input type="hidden" name="id" value={linkToEdit.id} />
           )}

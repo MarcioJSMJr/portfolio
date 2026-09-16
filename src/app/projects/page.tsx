@@ -48,7 +48,7 @@ export default async function ProjectsPage() {
           description="Explore meus principais projetos, repositórios públicos e sistemas em produção com filtros por stack e busca instantânea."
         />
 
-        <ProjectsExplorer projects={projects} itemsPerPage={8} />
+        <ProjectsExplorer projects={projects} itemsPerPage={6} />
       </Container>
 
       <Footer />
