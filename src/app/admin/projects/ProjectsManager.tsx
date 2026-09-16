@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { SyncGithubButton } from './SyncGithubButton';
 import { ToggleProjectPublishButton } from './ToggleProjectPublishButton';
 import { ProjectModal } from './ProjectModal';
@@ -13,13 +13,8 @@ import {
   ExternalLink,
   Edit,
   Trash2,
-  Eye,
-  EyeOff,
   Layers,
-  ChevronLeft,
-  ChevronRight,
   X,
-  Sparkles,
 } from 'lucide-react';
 import { GithubIcon } from '@/components/icons';
 
@@ -40,9 +35,10 @@ interface ProjectItem {
 
 interface ProjectsManagerProps {
   projects: ProjectItem[];
+  requestOpenCreate?: number;
 }
 
-export function ProjectsManager({ projects }: ProjectsManagerProps) {
+export function ProjectsManager({ projects, requestOpenCreate = 0 }: ProjectsManagerProps) {
   const [searchTerm, setSearchTerm] = useState('');
   const [visibilityFilter, setVisibilityFilter] = useState<'all' | 'visible' | 'hidden' | 'github' | 'custom'>('all');
   const [currentPage, setCurrentPage] = useState(1);
@@ -52,6 +48,12 @@ export function ProjectsManager({ projects }: ProjectsManagerProps) {
   const [isNewModalOpen, setIsNewModalOpen] = useState(false);
   const [projectToEdit, setProjectToEdit] = useState<ProjectItem | null>(null);
   const [projectToDelete, setProjectToDelete] = useState<{ id: string; title: string } | null>(null);
+
+  useEffect(() => {
+    if (requestOpenCreate > 0) {
+      setIsNewModalOpen(true);
+    }
+  }, [requestOpenCreate]);
 
   // 1. Filtragem
   const filteredProjects = useMemo(() => {
