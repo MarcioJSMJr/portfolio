@@ -313,7 +313,7 @@ export function ProjectsExplorer({
 
       {/* Paginação */}
       {totalPages > 1 && (
-        <div className="pt-6 flex items-center justify-center gap-2">
+        <div className="pt-6 flex flex-wrap items-center justify-center gap-2">
           <button
             onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
             disabled={currentPage === 1}
@@ -323,7 +323,7 @@ export function ProjectsExplorer({
             <span>Anterior</span>
           </button>
 
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-1 flex-wrap justify-center max-w-full">
             {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
               <button
                 key={page}
