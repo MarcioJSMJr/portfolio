@@ -25,20 +25,25 @@ interface LinkItem {
 
 interface LinksManagerProps {
   links: LinkItem[];
-  requestOpenCreate?: number;
+  openCreate?: boolean;
+  onCreateOpened?: () => void;
 }
 
-export function LinksManager({ links, requestOpenCreate = 0 }: LinksManagerProps) {
+export function LinksManager({
+  links,
+  openCreate = false,
+  onCreateOpened,
+}: LinksManagerProps) {
   const [searchTerm, setSearchTerm] = useState('');
   const [isNewModalOpen, setIsNewModalOpen] = useState(false);
   const [linkToEdit, setLinkToEdit] = useState<LinkItem | null>(null);
   const [linkToDelete, setLinkToDelete] = useState<{ id: string; title: string } | null>(null);
 
   useEffect(() => {
-    if (requestOpenCreate > 0) {
-      setIsNewModalOpen(true);
-    }
-  }, [requestOpenCreate]);
+    if (!openCreate) return;
+    setIsNewModalOpen(true);
+    onCreateOpened?.();
+  }, [openCreate, onCreateOpened]);
 
   const filteredLinks = useMemo(() => {
     const query = searchTerm.toLowerCase().trim();

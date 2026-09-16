@@ -35,10 +35,15 @@ interface ProjectItem {
 
 interface ProjectsManagerProps {
   projects: ProjectItem[];
-  requestOpenCreate?: number;
+  openCreate?: boolean;
+  onCreateOpened?: () => void;
 }
 
-export function ProjectsManager({ projects, requestOpenCreate = 0 }: ProjectsManagerProps) {
+export function ProjectsManager({
+  projects,
+  openCreate = false,
+  onCreateOpened,
+}: ProjectsManagerProps) {
   const [searchTerm, setSearchTerm] = useState('');
   const [visibilityFilter, setVisibilityFilter] = useState<'all' | 'visible' | 'hidden' | 'github' | 'custom'>('all');
   const [currentPage, setCurrentPage] = useState(1);
@@ -50,10 +55,10 @@ export function ProjectsManager({ projects, requestOpenCreate = 0 }: ProjectsMan
   const [projectToDelete, setProjectToDelete] = useState<{ id: string; title: string } | null>(null);
 
   useEffect(() => {
-    if (requestOpenCreate > 0) {
-      setIsNewModalOpen(true);
-    }
-  }, [requestOpenCreate]);
+    if (!openCreate) return;
+    setIsNewModalOpen(true);
+    onCreateOpened?.();
+  }, [openCreate, onCreateOpened]);
 
   // 1. Filtragem
   const filteredProjects = useMemo(() => {

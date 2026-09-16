@@ -67,9 +67,8 @@ export function AdminDashboardTabs({
 }: AdminDashboardTabsProps) {
   const [activeTab, setActiveTab] = useState<AdminTab>('overview');
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
-  const [projectCreateSignal, setProjectCreateSignal] = useState(0);
-  const [postCreateSignal, setPostCreateSignal] = useState(0);
-  const [linkCreateSignal, setLinkCreateSignal] = useState(0);
+  /** One-shot: só abre modal de criação quando vem das Ações Rápidas */
+  const [pendingCreate, setPendingCreate] = useState<'project' | 'post' | 'link' | null>(null);
 
   const tabs: Array<{
     id: AdminTab;
@@ -117,7 +116,11 @@ export function AdminDashboardTabs({
             return (
               <button
                 key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
+                type="button"
+                onClick={() => {
+                  setPendingCreate(null);
+                  setActiveTab(tab.id);
+                }}
                 className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-medium transition-all cursor-pointer ${
                   isActive
                     ? tab.activeClass
@@ -148,18 +151,21 @@ export function AdminDashboardTabs({
           projects={projects}
           posts={posts}
           quickLinks={quickLinks}
-          onNavigateTab={(tab) => setActiveTab(tab)}
+          onNavigateTab={(tab) => {
+            setPendingCreate(null);
+            setActiveTab(tab);
+          }}
           onOpenNewProject={() => {
+            setPendingCreate('project');
             setActiveTab('projects');
-            setProjectCreateSignal((n) => n + 1);
           }}
           onOpenNewPost={() => {
+            setPendingCreate('post');
             setActiveTab('posts');
-            setPostCreateSignal((n) => n + 1);
           }}
           onOpenNewLink={() => {
+            setPendingCreate('link');
             setActiveTab('links');
-            setLinkCreateSignal((n) => n + 1);
           }}
           onOpenProfile={() => setIsProfileModalOpen(true)}
         />
@@ -169,20 +175,29 @@ export function AdminDashboardTabs({
         <div className="animate-in fade-in duration-200">
           <ProjectsManager
             projects={projects}
-            requestOpenCreate={projectCreateSignal}
+            openCreate={pendingCreate === 'project'}
+            onCreateOpened={() => setPendingCreate(null)}
           />
         </div>
       )}
 
       {activeTab === 'posts' && (
         <div className="animate-in fade-in duration-200">
-          <PostsManager posts={posts} requestOpenCreate={postCreateSignal} />
+          <PostsManager
+            posts={posts}
+            openCreate={pendingCreate === 'post'}
+            onCreateOpened={() => setPendingCreate(null)}
+          />
         </div>
       )}
 
       {activeTab === 'links' && (
         <div className="animate-in fade-in duration-200">
-          <LinksManager links={quickLinks} requestOpenCreate={linkCreateSignal} />
+          <LinksManager
+            links={quickLinks}
+            openCreate={pendingCreate === 'link'}
+            onCreateOpened={() => setPendingCreate(null)}
+          />
         </div>
       )}
 

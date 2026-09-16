@@ -26,10 +26,15 @@ interface PostItem {
 
 interface PostsManagerProps {
   posts: PostItem[];
-  requestOpenCreate?: number;
+  openCreate?: boolean;
+  onCreateOpened?: () => void;
 }
 
-export function PostsManager({ posts, requestOpenCreate = 0 }: PostsManagerProps) {
+export function PostsManager({
+  posts,
+  openCreate = false,
+  onCreateOpened,
+}: PostsManagerProps) {
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState<'all' | 'published' | 'draft'>('all');
   const [isNewModalOpen, setIsNewModalOpen] = useState(false);
@@ -37,10 +42,10 @@ export function PostsManager({ posts, requestOpenCreate = 0 }: PostsManagerProps
   const [postToDelete, setPostToDelete] = useState<{ id: string; title: string } | null>(null);
 
   useEffect(() => {
-    if (requestOpenCreate > 0) {
-      setIsNewModalOpen(true);
-    }
-  }, [requestOpenCreate]);
+    if (!openCreate) return;
+    setIsNewModalOpen(true);
+    onCreateOpened?.();
+  }, [openCreate, onCreateOpened]);
 
   const filteredPosts = useMemo(() => {
     return posts.filter((post) => {
