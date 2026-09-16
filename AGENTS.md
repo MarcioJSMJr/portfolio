@@ -8,6 +8,7 @@
 - **Tema:** `next-themes` (claro/escuro)
 - **Estrutura de Pastas:**
   - `src/app/` — páginas/rotas (Hub `/`, Projetos, Diário, Admin, redirect `/links` → `/`)
+  - `src/app/admin/` — painel: `page.tsx` + pastas por domínio (`shell/`, `projects/`, `posts/`, `links/`, `profile/`)
   - `src/components/ui/` — primitivos compartilhados (`PageShell`, `Container`, `PageHeader`, `EmptyState`, `Tag`, `SocialIconLink`)
   - `src/components/hub/` — UI do Hub Linktree (`HubPage`, `HubProfile`, `HubLinkCard`, `HubSocials`)
   - `src/components/` — Navbar, Footer, explorers públicos, `ShareButton`, tema
@@ -40,19 +41,19 @@
 - [x] Reestruturação da Raiz (`src/app/page.tsx`) como Hub / Linktree moderno com botões dinâmicos e dados de `Profile`.
 - [x] Criação da rota dedicada para projetos (`src/app/projects/page.tsx`).
 - [x] Criação do Módulo de Diário / Posts (`src/app/journal/page.tsx` e `src/app/journal/[slug]/page.tsx`).
-- [x] Painel Admin (`/admin`) completo e protegido com abas para Perfil, Links do Hub, Projetos e Diário.
+- [x] Painel Admin (`/admin`) completo e protegido: abas Visão Geral / Projetos / Diário / Links; Perfil via modal no header.
 - [x] Suporte a Tema Dinâmico Claro/Escuro (Dark/Light mode via `next-themes` com `ThemeToggle` na Navbar, Hub e Admin).
 - [x] Auditoria de dinamismo total no Hub, Projetos, Diário e Links (100% integrados ao Supabase via Prisma).
 - [x] Integração com `@vercel/speed-insights` e `@vercel/analytics` no RootLayout para métricas de performance e tráfego.
 - [x] Sincronização Automática com API do GitHub (`src/actions/github-sync.ts`) com upsert, estrelas, tags e toggle de visibilidade.
 - [x] Vitrines Públicas Interativas (`/projects` e `/journal`) com busca instantânea, filtro por tags/stack e paginação.
 - [x] Painel Analítico de Visão Geral no Admin (`/admin`) com KPIs, gráfico de distribuição de stack e feed de atividades.
-- [x] Gerenciamento de Projetos via Modais Elegantes (Criação, Edição, Alternância de Visibilidade e Confirmação de Exclusão).
+- [x] Gerenciamento via Modais (Projetos, Posts, Links, Perfil) — criação, edição, exclusão e quick actions na visão geral.
 - [x] Hub mais presente (card-painel, monograma, stats, fundo grade+glow) e primitivos UI compartilhados (`src/components/ui/` + `src/components/hub/`).
-- [x] Limpeza de código morto: seções de landing órfãs, clone `/links`, forms admin substituídos por modais; degradê graceful sem banco.
+- [x] Limpeza de código morto: seções de landing órfãs, clone `/links`, forms admin inline substituídos por managers + modais.
 - [x] Layout full-bleed nas vitrines/Navbar/Footer (Hub continua centralizado); Navbar redesenhada (marca terminal + nav segmentada).
 - [x] Branding Marcio Tech na Navbar + favicon; menu centralizado; busca/filtros em linha nas vitrines.
-- [ ] Reorganizar pastas do Admin por domínio (profile / projects / posts / analytics) — próximo passo.
+- [x] Admin reorganizado por domínio (`shell/`, `projects/`, `posts/`, `links/`, `profile/`) com shell modernizado.
 - [ ] Conectar o projeto na Vercel e configurar as variáveis de ambiente de produção.
 
 <!-- BEGIN:nextjs-agent-rules -->
