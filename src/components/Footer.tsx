@@ -30,9 +30,9 @@ export async function Footer() {
               <Image
                 src="/brand/marcio-tech-logo.png"
                 alt="Marcio Tech"
-                width={180}
-                height={43}
-                className="h-8 sm:h-9 w-auto object-contain"
+                width={240}
+                height={76}
+                className="h-10 sm:h-12 w-auto object-contain"
               />
             </Link>
             <p className="text-xs text-neutral-500 line-clamp-2">{bio}</p>
