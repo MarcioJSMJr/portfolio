@@ -25,6 +25,7 @@
 - Arquivo de configuração: `prisma.config.ts` (Prisma 7 usa `datasource: { url: process.env.DIRECT_URL }` para migrações).
 - As credenciais de banco ficam no `.env` (`DATABASE_URL` e `DIRECT_URL`).
 - Proteção da rota administrativa via `ADMIN_PASSWORD` no `.env` (com cookie HttpOnly `admin_session`).
+- Headers de segurança em `next.config.ts`: CSP, `X-Frame-Options`, `X-Content-Type-Options`, `Referrer-Policy`, `Permissions-Policy` (além do HSTS da Vercel).
 - O Prisma Client Singleton está instanciado em `src/lib/prisma.ts` utilizando o driver adapter `@prisma/adapter-pg` e o cliente gerado em `src/generated/prisma`.
 - Páginas públicas (Hub, Projetos, Diário) degradam com `.catch()` / empty state / 404 quando o banco estiver offline — não devem retornar 500.
 
@@ -54,6 +55,7 @@
 - [x] Layout full-bleed nas vitrines/Navbar/Footer (Hub continua centralizado); Navbar redesenhada (marca terminal + nav segmentada).
 - [x] Branding Marcio Tech na Navbar + favicon; menu centralizado; busca/filtros em linha nas vitrines.
 - [x] Admin reorganizado por domínio (`shell/`, `projects/`, `posts/`, `links/`, `profile/`) com shell modernizado.
+- [x] Headers de segurança HTTP (CSP, frame options, nosniff, referrer e permissions policy) via `next.config.ts`.
 - [ ] Conectar o projeto na Vercel e configurar as variáveis de ambiente de produção.
 
 <!-- BEGIN:nextjs-agent-rules -->
