@@ -110,6 +110,95 @@ export async function createPost(
 }
 
 /**
+ * Server Action para atualizar um post existente
+ */
+export async function updatePost(
+  prevState: PostActionState | null,
+  formData: FormData
+): Promise<PostActionState> {
+  try {
+    const isAuth = await isAdminAuthenticated();
+    if (!isAuth) {
+      return { success: false, message: 'Acesso não autorizado.' };
+    }
+
+    const id = (formData.get('id') as string | null)?.trim() || '';
+    const title = (formData.get('title') as string | null)?.trim() || '';
+    const customSlug = (formData.get('slug') as string | null)?.trim() || '';
+    const content = (formData.get('content') as string | null)?.trim() || '';
+    const published = formData.get('published') === 'on' || formData.get('published') === 'true';
+
+    if (!id) {
+      return { success: false, message: 'ID do post inválido.' };
+    }
+
+    const errors: NonNullable<PostActionState['errors']> = {};
+
+    if (!title || title.length < 3) {
+      errors.title = ['O título deve conter pelo menos 3 caracteres.'];
+    }
+
+    if (!content || content.length < 10) {
+      errors.content = ['O conteúdo deve ter pelo menos 10 caracteres.'];
+    }
+
+    if (Object.keys(errors).length > 0) {
+      return {
+        success: false,
+        message: 'Por favor, corrija os campos do post.',
+        errors,
+      };
+    }
+
+    const existing = await prisma.post.findUnique({ where: { id } });
+    if (!existing) {
+      return { success: false, message: 'Post não encontrado.' };
+    }
+
+    let finalSlug = slugify(customSlug || title);
+    if (!finalSlug) {
+      finalSlug = existing.slug;
+    }
+
+    if (finalSlug !== existing.slug) {
+      const slugTaken = await prisma.post.findUnique({ where: { slug: finalSlug } });
+      if (slugTaken && slugTaken.id !== id) {
+        finalSlug = `${finalSlug}-${Math.floor(1000 + Math.random() * 9000)}`;
+      }
+    }
+
+    await prisma.post.update({
+      where: { id },
+      data: {
+        title,
+        slug: finalSlug,
+        content,
+        published,
+      },
+    });
+
+    revalidatePath('/journal');
+    revalidatePath(`/journal/${existing.slug}`);
+    revalidatePath(`/journal/${finalSlug}`);
+    revalidatePath('/admin');
+
+    return {
+      success: true,
+      message: 'Post atualizado com sucesso!',
+    };
+  } catch (error) {
+    console.error('Erro ao atualizar post:', error);
+    return {
+      success: false,
+      message: 'Erro interno ao atualizar o post.',
+      errors: {
+        _form: [error instanceof Error ? error.message : 'Erro desconhecido.'],
+      },
+    };
+  }
+}
+
+/**
  * Server Action para excluir um post do diário
  */
 export async function deletePost(id: string): Promise<PostActionState> {

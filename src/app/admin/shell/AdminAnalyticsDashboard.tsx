@@ -8,15 +8,10 @@ import {
   Star,
   Eye,
   EyeOff,
-  TrendingUp,
   Activity,
-  Layers,
-  Sparkles,
-  ArrowRight,
   Code2,
-  Calendar,
+  User,
 } from 'lucide-react';
-import { GithubIcon } from '@/components/icons';
 
 interface AdminAnalyticsDashboardProps {
   projects: Array<{
@@ -49,8 +44,11 @@ interface AdminAnalyticsDashboardProps {
     highlight: boolean;
     order: number;
   }>;
-  onNavigateTab: (tab: 'projects' | 'posts' | 'links' | 'profile') => void;
-  onOpenNewProjectModal?: () => void;
+  onNavigateTab: (tab: 'projects' | 'posts' | 'links') => void;
+  onOpenNewProject?: () => void;
+  onOpenNewPost?: () => void;
+  onOpenNewLink?: () => void;
+  onOpenProfile?: () => void;
 }
 
 export function AdminAnalyticsDashboard({
@@ -58,22 +56,21 @@ export function AdminAnalyticsDashboard({
   posts,
   quickLinks,
   onNavigateTab,
-  onOpenNewProjectModal,
+  onOpenNewProject,
+  onOpenNewPost,
+  onOpenNewLink,
+  onOpenProfile,
 }: AdminAnalyticsDashboardProps) {
-  // 1. Cálculos de Projetos
   const totalProjects = projects.length;
   const visibleProjects = projects.filter((p) => p.published !== false).length;
   const hiddenProjects = totalProjects - visibleProjects;
   const totalStars = projects.reduce((acc, p) => acc + (p.stars || 0), 0);
   const githubProjects = projects.filter((p) => !p.isCustom).length;
-  const customProjects = projects.filter((p) => p.isCustom).length;
 
-  // 2. Cálculos de Posts
   const totalPosts = posts.length;
   const publishedPosts = posts.filter((p) => p.published).length;
   const draftPosts = totalPosts - publishedPosts;
 
-  // 3. Distribuição de Tecnologias / Tags
   const techDistribution = useMemo(() => {
     const counts: Record<string, number> = {};
     let totalTagsCount = 0;
@@ -88,19 +85,16 @@ export function AdminAnalyticsDashboard({
       });
     });
 
-    const sorted = Object.entries(counts)
+    return Object.entries(counts)
       .map(([name, count]) => ({
         name,
         count,
         percentage: totalTagsCount > 0 ? Math.round((count / totalTagsCount) * 100) : 0,
       }))
       .sort((a, b) => b.count - a.count)
-      .slice(0, 8); // top 8 tecnologias
-
-    return sorted;
+      .slice(0, 8);
   }, [projects]);
 
-  // 4. Feed de Atividades Recentes
   const recentActivities = useMemo(() => {
     const items: Array<{
       id: string;
@@ -135,12 +129,11 @@ export function AdminAnalyticsDashboard({
 
   return (
     <div className="space-y-8 animate-in fade-in duration-200">
-      {/* 1. Grade de Cards de KPIs */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {/* KPI: Projetos */}
-        <div
+        <button
+          type="button"
           onClick={() => onNavigateTab('projects')}
-          className="p-5 rounded-2xl bg-white dark:bg-neutral-900/70 border border-neutral-200 dark:border-neutral-800 hover:border-indigo-500/50 transition-all cursor-pointer shadow-sm hover:shadow-md group"
+          className="text-left p-5 rounded-2xl bg-white/80 dark:bg-neutral-900/70 border border-neutral-200 dark:border-neutral-800 hover:border-indigo-500/50 transition-all cursor-pointer shadow-sm hover:shadow-md group backdrop-blur-sm"
         >
           <div className="flex items-center justify-between">
             <span className="text-xs font-medium text-neutral-500">Projetos</span>
@@ -163,16 +156,16 @@ export function AdminAnalyticsDashboard({
               )}
             </div>
           </div>
-        </div>
+        </button>
 
-        {/* KPI: Diário */}
-        <div
+        <button
+          type="button"
           onClick={() => onNavigateTab('posts')}
-          className="p-5 rounded-2xl bg-white dark:bg-neutral-900/70 border border-neutral-200 dark:border-neutral-800 hover:border-purple-500/50 transition-all cursor-pointer shadow-sm hover:shadow-md group"
+          className="text-left p-5 rounded-2xl bg-white/80 dark:bg-neutral-900/70 border border-neutral-200 dark:border-neutral-800 hover:border-violet-500/50 transition-all cursor-pointer shadow-sm hover:shadow-md group backdrop-blur-sm"
         >
           <div className="flex items-center justify-between">
             <span className="text-xs font-medium text-neutral-500">Artigos no Diário</span>
-            <div className="p-2 rounded-xl bg-purple-500/10 text-purple-600 dark:text-purple-400 group-hover:scale-110 transition-transform">
+            <div className="p-2 rounded-xl bg-violet-500/10 text-violet-600 dark:text-violet-400 group-hover:scale-110 transition-transform">
               <BookOpen className="w-4 h-4" />
             </div>
           </div>
@@ -189,16 +182,16 @@ export function AdminAnalyticsDashboard({
               )}
             </div>
           </div>
-        </div>
+        </button>
 
-        {/* KPI: Links do Hub */}
-        <div
+        <button
+          type="button"
           onClick={() => onNavigateTab('links')}
-          className="p-5 rounded-2xl bg-white dark:bg-neutral-900/70 border border-neutral-200 dark:border-neutral-800 hover:border-cyan-500/50 transition-all cursor-pointer shadow-sm hover:shadow-md group"
+          className="text-left p-5 rounded-2xl bg-white/80 dark:bg-neutral-900/70 border border-neutral-200 dark:border-neutral-800 hover:border-sky-500/50 transition-all cursor-pointer shadow-sm hover:shadow-md group backdrop-blur-sm"
         >
           <div className="flex items-center justify-between">
             <span className="text-xs font-medium text-neutral-500">Links no Hub</span>
-            <div className="p-2 rounded-xl bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 group-hover:scale-110 transition-transform">
+            <div className="p-2 rounded-xl bg-sky-500/10 text-sky-600 dark:text-sky-400 group-hover:scale-110 transition-transform">
               <Link2 className="w-4 h-4" />
             </div>
           </div>
@@ -210,10 +203,9 @@ export function AdminAnalyticsDashboard({
               {quickLinks.filter((l) => l.highlight).length} botões em destaque
             </div>
           </div>
-        </div>
+        </button>
 
-        {/* KPI: Estrelas no GitHub */}
-        <div className="p-5 rounded-2xl bg-white dark:bg-neutral-900/70 border border-neutral-200 dark:border-neutral-800 shadow-sm">
+        <div className="p-5 rounded-2xl bg-white/80 dark:bg-neutral-900/70 border border-neutral-200 dark:border-neutral-800 shadow-sm backdrop-blur-sm">
           <div className="flex items-center justify-between">
             <span className="text-xs font-medium text-neutral-500">Estrelas no GitHub</span>
             <div className="p-2 rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400">
@@ -221,9 +213,8 @@ export function AdminAnalyticsDashboard({
             </div>
           </div>
           <div className="mt-3">
-            <div className="text-3xl font-extrabold text-neutral-900 dark:text-white tracking-tight flex items-center gap-2">
-              <span>{totalStars}</span>
-              <span className="text-xs font-mono font-normal text-amber-500">⭐ total</span>
+            <div className="text-3xl font-extrabold text-neutral-900 dark:text-white tracking-tight">
+              {totalStars}
             </div>
             <div className="mt-2 text-xs text-neutral-500 font-mono">
               {githubProjects} repositórios sincronizados
@@ -232,10 +223,8 @@ export function AdminAnalyticsDashboard({
         </div>
       </div>
 
-      {/* 2. Gráficos & Distribuição de Tecnologias */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Distribuição de Stack / Tecnologias */}
-        <div className="lg:col-span-2 p-6 rounded-2xl bg-white dark:bg-neutral-900/70 border border-neutral-200 dark:border-neutral-800 shadow-sm space-y-6">
+        <div className="lg:col-span-2 p-6 rounded-2xl bg-white/80 dark:bg-neutral-900/70 border border-neutral-200 dark:border-neutral-800 shadow-sm space-y-6 backdrop-blur-sm">
           <div className="flex items-center justify-between">
             <div className="space-y-1">
               <h3 className="text-base font-bold text-neutral-900 dark:text-white flex items-center gap-2">
@@ -261,8 +250,8 @@ export function AdminAnalyticsDashboard({
                 const colors = [
                   'bg-blue-500',
                   'bg-indigo-500',
-                  'bg-purple-500',
-                  'bg-cyan-500',
+                  'bg-violet-500',
+                  'bg-sky-500',
                   'bg-emerald-500',
                   'bg-amber-500',
                   'bg-rose-500',
@@ -293,8 +282,7 @@ export function AdminAnalyticsDashboard({
           )}
         </div>
 
-        {/* Atividades Recentes & Atalhos */}
-        <div className="p-6 rounded-2xl bg-white dark:bg-neutral-900/70 border border-neutral-200 dark:border-neutral-800 shadow-sm flex flex-col justify-between space-y-6">
+        <div className="p-6 rounded-2xl bg-white/80 dark:bg-neutral-900/70 border border-neutral-200 dark:border-neutral-800 shadow-sm flex flex-col justify-between space-y-6 backdrop-blur-sm">
           <div className="space-y-4">
             <div className="space-y-1">
               <h3 className="text-base font-bold text-neutral-900 dark:text-white flex items-center gap-2">
@@ -321,7 +309,7 @@ export function AdminAnalyticsDashboard({
                       {act.type === 'project' ? (
                         <FolderGit2 className="w-3.5 h-3.5 text-indigo-500 shrink-0" />
                       ) : (
-                        <BookOpen className="w-3.5 h-3.5 text-purple-500 shrink-0" />
+                        <BookOpen className="w-3.5 h-3.5 text-violet-500 shrink-0" />
                       )}
                       <span className="font-medium text-neutral-800 dark:text-neutral-200 truncate">
                         {act.title}
@@ -336,26 +324,35 @@ export function AdminAnalyticsDashboard({
             )}
           </div>
 
-          {/* Atalhos Rápidos */}
           <div className="pt-4 border-t border-neutral-200 dark:border-neutral-800 space-y-2">
             <span className="text-[11px] font-mono text-neutral-500 block uppercase tracking-wider">
               Ações Rápidas
             </span>
             <div className="grid grid-cols-2 gap-2">
               <button
-                onClick={() => {
-                  onNavigateTab('projects');
-                  onOpenNewProjectModal?.();
-                }}
+                onClick={onOpenNewProject}
                 className="p-2.5 rounded-xl bg-indigo-50 dark:bg-indigo-500/10 hover:bg-indigo-100 dark:hover:bg-indigo-500/20 text-indigo-700 dark:text-indigo-300 font-medium text-xs border border-indigo-200 dark:border-indigo-500/30 transition-all cursor-pointer text-center"
               >
                 + Novo Projeto
               </button>
               <button
-                onClick={() => onNavigateTab('posts')}
-                className="p-2.5 rounded-xl bg-purple-50 dark:bg-purple-500/10 hover:bg-purple-100 dark:hover:bg-purple-500/20 text-purple-700 dark:text-purple-300 font-medium text-xs border border-purple-200 dark:border-purple-500/30 transition-all cursor-pointer text-center"
+                onClick={onOpenNewPost}
+                className="p-2.5 rounded-xl bg-violet-50 dark:bg-violet-500/10 hover:bg-violet-100 dark:hover:bg-violet-500/20 text-violet-700 dark:text-violet-300 font-medium text-xs border border-violet-200 dark:border-violet-500/30 transition-all cursor-pointer text-center"
               >
                 + Novo Artigo
+              </button>
+              <button
+                onClick={onOpenNewLink}
+                className="p-2.5 rounded-xl bg-sky-50 dark:bg-sky-500/10 hover:bg-sky-100 dark:hover:bg-sky-500/20 text-sky-700 dark:text-sky-300 font-medium text-xs border border-sky-200 dark:border-sky-500/30 transition-all cursor-pointer text-center"
+              >
+                + Novo Link
+              </button>
+              <button
+                onClick={onOpenProfile}
+                className="inline-flex items-center justify-center gap-1.5 p-2.5 rounded-xl bg-teal-50 dark:bg-teal-500/10 hover:bg-teal-100 dark:hover:bg-teal-500/20 text-teal-700 dark:text-teal-300 font-medium text-xs border border-teal-200 dark:border-teal-500/30 transition-all cursor-pointer"
+              >
+                <User className="w-3.5 h-3.5" />
+                Perfil
               </button>
             </div>
           </div>
