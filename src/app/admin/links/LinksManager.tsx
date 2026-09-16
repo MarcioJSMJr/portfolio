@@ -37,7 +37,7 @@ export function LinksManager({
 }: LinksManagerProps) {
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 6;
+  const itemsPerPage = 4;
   const [isNewModalOpen, setIsNewModalOpen] = useState(false);
   const [linkToEdit, setLinkToEdit] = useState<LinkItem | null>(null);
   const [linkToDelete, setLinkToDelete] = useState<{ id: string; title: string } | null>(null);

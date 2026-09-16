@@ -39,7 +39,7 @@ export function PostsManager({
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState<'all' | 'published' | 'draft'>('all');
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 6;
+  const itemsPerPage = 4;
   const [isNewModalOpen, setIsNewModalOpen] = useState(false);
   const [postToEdit, setPostToEdit] = useState<PostItem | null>(null);
   const [postToDelete, setPostToDelete] = useState<{ id: string; title: string } | null>(null);

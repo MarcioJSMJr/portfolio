@@ -48,7 +48,7 @@ export function ProjectsManager({
   const [searchTerm, setSearchTerm] = useState('');
   const [visibilityFilter, setVisibilityFilter] = useState<'all' | 'visible' | 'hidden' | 'github' | 'custom'>('all');
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 6;
+  const itemsPerPage = 4;
 
   // Modais
   const [isNewModalOpen, setIsNewModalOpen] = useState(false);
