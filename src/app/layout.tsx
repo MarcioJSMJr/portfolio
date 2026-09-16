@@ -18,13 +18,6 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Marcio Tech | Portfólio Full Stack",
   description: "Portfólio profissional, showcase de projetos, diário técnico e links.",
-  icons: {
-    icon: [
-      { url: "/favicon.ico", sizes: "any" },
-      { url: "/icon.png", type: "image/png" },
-    ],
-    apple: [{ url: "/icon.png" }],
-  },
 };
 
 export default function RootLayout({
