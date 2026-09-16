@@ -31,7 +31,7 @@
 - A home (`/`) é um **Hub estilo Linktree**: card-painel glass (`max-w-xl` centralizado), kicker de disponibilidade, monograma quando não há avatar, stats (projetos/posts), `HubLinkCard` unificado e redes sociais. **O Hub permanece estreito de propósito** — não usa o Container full-bleed.
 - Fundo compartilhado via `PageShell` (grade + glow azul/roxo); tema/compartilhar ficam **dentro** do painel do Hub.
 - Demais páginas públicas (`/projects`, `/journal`, Navbar, Footer) usam `Container` com `size="full"` (`max-w-none` + padding lateral) para ocupar a largura da tela. Artigo individual (`/journal/[slug]`) fica em `size="lg"` para leitura confortável.
-- Navbar e Footer usam a logo **Marcio Tech** (`/brand/marcio-tech-logo.png`). Na Navbar o menu segmentado fica **centralizado** (via `absolute left-1/2 -translate-x-1/2`) com estado ativo via `usePathname`. Favicon em `/favicon.ico` + `/icon.png`.
+- Navbar e Footer usam a logo **Marcio Tech** (`/brand/marcio-tech-logo.png`, fundo transparente). Menu da Navbar **centralizado**. Favicon via App Router: `src/app/favicon.ico`, `src/app/icon.png` e `src/app/apple-icon.png` (também espelhados em `public/` para fallback).
 - Em Projetos, busca compacta (`max-w-md`) e filtros de stack ficam **na mesma linha**; no Diário a busca compacta fica ao lado do contador.
 - `/links` apenas redireciona para `/` (clone removido; `ShareButton` vive em `src/components/`).
 
